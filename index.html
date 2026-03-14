@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KNR Charitable Trust</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #1565C0;
+    --deep-maroon: #0D47A1;
+    --gold: #1976D2;
+    --gold-light: #90CAF9;
+    --cream: #EFF4FB;
+    --off-white: #F3F7FD;
+    --dark: #050D1A;
+    --text: #0D1B2E;
+    --muted: #4A6080;
+    --border: #BBDEFB;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    overflow-x: hidden;
+    font-size: 17px;
+  }
+
+  .whatsapp-float{
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:20px;
+    right:20px;
+    background-color:#25D366;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    font-size:30px;
+    line-height:60px;
+    box-shadow:2px 2px 10px rgba(0,0,0,0.3);
+    z-index:100;
+    text-decoration:none;
+  }
+
+  .whatsapp-float:hover{
+    background-color:#1ebe5d;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 9000;
+    background: rgba(5, 13, 26, 0.96);
+    padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.03em;
+    max-width: 260px; line-height: 1.3;
+  }
+
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.95rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .nav-admin-btn {
+    background: transparent;
+    border: 1px solid rgba(25,118,210,0.55);
+    color: var(--gold-light);
+    padding: 6px 16px;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px;
+    transition: all 0.3s; font-family: 'Jost', sans-serif;
+  }
+  .nav-admin-btn:hover { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+
+  /* ── BANNER / SLIDER ── */
+  #home {
+    margin-top: 64px;
+    position: relative;
+    height: 92vh; min-height: 520px;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .slider-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.9s cubic-bezier(0.77,0,0.175,1);
+  }
+
+  .slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .slide-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom,
+      rgba(28,16,8,0.35) 0%,
+      rgba(28,16,8,0.55) 60%,
+      rgba(28,16,8,0.85) 100%);
+  }
+
+  .slide-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 0 40px;
+  }
+
+  .slide-content .om {
+    font-size: 2.8rem; color: var(--gold-light);
+    margin-bottom: 16px; display: block;
+    opacity: 0.9;
+  }
+
+  .slide-content h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700; color: #fff;
+    line-height: 1.15; letter-spacing: 0.01em;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+  }
+
+  .slide-content p {
+    margin-top: 16px;
+    color: rgba(255,255,255,0.78);
+    font-size: 1rem; font-weight: 300;
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+
+  .slide-content .tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem; color: var(--gold-light);
+    letter-spacing: 0.04em; margin-top: 10px;
+    text-transform: none;
+  }
+
+  /* Slider dots */
+  .slider-dots {
+    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 10px; z-index: 10;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer; transition: all 0.3s;
+    border: none;
+  }
+  .dot.active { background: var(--gold-light); transform: scale(1.3); }
+
+  /* Slider arrows */
+  .slider-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    z-index: 10; background: rgba(10,31,10,0.5);
+    border: 1px solid rgba(25,118,210,0.5);
+    color: var(--gold-light); width: 44px; height: 44px;
+    border-radius: 50%; cursor: pointer; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .slider-arrow:hover { background: var(--gold); color: var(--dark); }
+  .slider-arrow.prev { left: 24px; }
+  .slider-arrow.next { right: 24px; }
+
+  /* No-image placeholder slides */
+  .slide-placeholder {
+    background: #050d1a;
+    overflow: hidden;
+  }
+  .slide-bg-svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 80px 0; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+
+  .section-label {
+    font-size: 0.85rem; font-weight: 600;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--saffron); margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 3.5vw, 3.2rem);
+    font-weight: 700; color: var(--deep-maroon);
+    line-height: 1.2; margin-bottom: 24px;
+  }
+
+  .divider {
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--saffron));
+    margin-bottom: 32px;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--cream); }
+
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text); line-height: 1.8;
+    font-size: 1.05rem; margin-bottom: 16px;
+  }
+
+  .trustees-box {
+    background: var(--dark);
+    border-radius: 4px;
+    padding: 36px;
+    border-left: 4px solid var(--gold);
+  }
+
+  .trustees-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold-light); font-size: 1.2rem;
+    letter-spacing: 0.08em; margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+
+  .trustee-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(25,118,210,0.25);
+  }
+  .trustee-item:last-child { border-bottom: none; }
+
+  .trustee-item .name {
+    color: #fff; font-weight: 600;
+    font-size: 1.05rem; letter-spacing: 0.03em;
+  }
+  .trustee-item .role {
+    color: var(--gold-light); font-size: 0.92rem;
+    margin-top: 4px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  /* ── AIMS GRID ── */
+  .aims-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .aim-card {
+    display: flex; gap: 20px; align-items: flex-start;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--saffron);
+    border-radius: 4px;
+    padding: 24px 24px 24px 20px;
+    transition: all 0.3s;
+  }
+  .aim-card:hover { box-shadow: 0 8px 24px rgba(21,101,192,0.1); transform: translateY(-3px); }
+  .aim-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 700;
+    color: var(--border); line-height: 1;
+    min-width: 44px; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .aim-body h4 {
+    font-size: 1.0rem; font-weight: 700;
+    color: var(--deep-maroon); margin-bottom: 8px;
+  }
+  .aim-body p {
+    font-size: 0.92rem; color: var(--muted);
+    line-height: 1.75;
+  }
+  @media (max-width: 768px) {
+    .aims-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── OBJECTIVES ── */
+  #objectives { background: var(--off-white); }
+
+  .objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px; margin-top: 8px;
+  }
+
+  .obj-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--saffron);
+    border-radius: 4px;
+    padding: 24px;
+    transition: all 0.3s;
+  }
+  .obj-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(21,101,192,0.12); }
+
+  .obj-card .icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .obj-card h4 { font-size: 1.05rem; font-weight: 600; color: var(--deep-maroon); margin-bottom: 6px; }
+  .obj-card p { font-size: 0.95rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── ACTIVITIES ── */
+  #activities { background: var(--dark); }
+  #activities .section-title { color: var(--gold-light); }
+  #activities .section-label { color: var(--saffron); }
+
+  .activities-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .activity-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(25,118,210,0.25);
+    border-radius: 4px; padding: 40px 32px;
+    text-align: center;
+    transition: all 0.4s;
+  }
+  .activity-card:hover {
+    background: rgba(25,118,210,0.12);
+    border-color: var(--gold);
+    transform: translateY(-6px);
+  }
+  .activity-card .act-icon { font-size: 2.8rem; margin-bottom: 20px; }
+  .activity-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold-light); font-size: 1.55rem;
+    margin-bottom: 12px;
+  }
+  .activity-card p { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.7; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--cream); }
+
+  .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+
+  .testi-card {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 4px; padding: 32px;
+    position: relative;
+  }
+  .testi-card::before {
+    content: '"';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem; color: var(--gold);
+    position: absolute; top: 8px; left: 20px;
+    line-height: 1; opacity: 0.25;
+  }
+  .testi-card p { font-style: italic; color: var(--text); line-height: 1.7; margin-bottom: 16px; font-size: 1.05rem; }
+  .testi-card .author { font-weight: 600; color: var(--deep-maroon); font-size: 0.95rem; }
+  .testi-card .author-loc { color: var(--muted); font-size: 0.88rem; }
+
+  /* ── GALLERY ── */
+  #gallery { background: var(--off-white); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 12px;
+  }
+
+  .gallery-item {
+    aspect-ratio: 1;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .gallery-item:hover img { transform: scale(1.08); }
+  .gallery-item .gallery-overlay {
+    position: absolute; inset: 0;
+    background: rgba(28,16,8,0.5);
+    opacity: 0; display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.3s; color: #fff; font-size: 1.6rem;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+  .gallery-placeholder {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--border), var(--cream));
+    border-radius: 3px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--muted); font-size: 0.95rem; gap: 8px;
+  }
+  .gallery-placeholder span { font-size: 2rem; }
+
+  .gallery-note {
+    text-align: center; margin-top: 24px;
+    color: var(--muted); font-size: 1rem;
+  }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--dark); }
+  #contact .section-title { color: var(--gold-light); }
+  #contact .section-label { color: var(--saffron); }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+
+  .contact-info-item {
+    display: flex; gap: 20px; margin-bottom: 32px;
+    align-items: flex-start;
+  }
+  .contact-info-item .c-icon {
+    width: 44px; height: 44px;
+    background: rgba(25,118,210,0.15);
+    border: 1px solid rgba(25,118,210,0.35);
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+  }
+  .contact-info-item h4 { color: var(--gold-light); font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+  .contact-info-item p { color: rgba(255,255,255,0.7); font-size: 1rem; line-height: 1.7; }
+  .contact-info-item a { color: var(--gold-light); text-decoration: none; }
+
+  .contact-form input, .contact-form textarea {
+    width: 100%; background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(25,118,210,0.3);
+    border-radius: 3px; padding: 14px 18px;
+    color: #fff; font-family: 'Jost', sans-serif;
+    font-size: 1rem; margin-bottom: 14px;
+    transition: border-color 0.3s; outline: none;
+  }
+  .contact-form input::placeholder, .contact-form textarea::placeholder { color: rgba(255,255,255,0.35); }
+  .contact-form input:focus, .contact-form textarea:focus { border-color: var(--gold); }
+  .contact-form textarea { height: 120px; resize: vertical; }
+  .contact-form button {
+    background: linear-gradient(135deg, var(--gold), var(--saffron));
+    color: #fff; border: none; padding: 14px 36px;
+    font-family: 'Jost', sans-serif; font-weight: 600;
+    font-size: 0.95rem; letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; border-radius: 3px; transition: all 0.3s;
+  }
+  .contact-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(25,118,210,0.35); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #02050f;
+    border-top: 1px solid rgba(25,118,210,0.25);
+    padding: 32px 40px;
+    text-align: center;
+  }
+  footer p { color: rgba(255,255,255,0.4); font-size: 0.95rem; }
+  footer span { color: var(--gold-light); }
+
+  /* ── ADMIN MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--dark);
+    border: 1px solid rgba(25,118,210,0.35);
+    border-radius: 6px;
+    width: min(480px, 92vw);
+    padding: 40px;
+    position: relative;
+    animation: modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; color: rgba(255,255,255,0.5);
+    font-size: 1.3rem; cursor: pointer; transition: color 0.3s;
+  }
+  .modal-close:hover { color: var(--gold-light); }
+
+  .modal h2 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold-light); font-size: 1.9rem; margin-bottom: 6px;
+  }
+  .modal .modal-sub { color: rgba(255,255,255,0.45); font-size: 0.92rem; margin-bottom: 28px; letter-spacing: 0.08em; }
+
+  .modal input[type="text"],
+  .modal input[type="password"] {
+    width: 100%; background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(25,118,210,0.3);
+    border-radius: 3px; padding: 13px 16px;
+    color: #fff; font-family: 'Jost', sans-serif;
+    font-size: 1.0rem; margin-bottom: 14px;
+    outline: none; transition: border-color 0.3s;
+  }
+  .modal input:focus { border-color: var(--gold); }
+
+  .modal-login-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold), var(--saffron));
+    color: #fff; border: none; padding: 14px;
+    font-family: 'Jost', sans-serif; font-weight: 700;
+    font-size: 0.95rem; letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; border-radius: 3px; transition: all 0.3s; margin-top: 6px;
+  }
+  .modal-login-btn:hover { opacity: 0.9; box-shadow: 0 8px 24px rgba(25,118,210,0.35); }
+
+  .modal-error {
+    color: #e06060; font-size: 0.92rem; margin-top: -6px; margin-bottom: 12px;
+    display: none;
+  }
+  .modal-error.show { display: block; }
+
+  /* ── ADMIN PANEL ── */
+  #admin-panel {
+    display: none;
+    background: var(--dark);
+    border: 1px solid rgba(25,118,210,0.35);
+    border-radius: 6px;
+    width: min(560px, 94vw);
+    padding: 40px;
+    position: relative;
+    animation: modalIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  #admin-panel.open { display: block; }
+
+  #admin-panel h2 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--gold-light); font-size: 1.75rem; margin-bottom: 4px;
+  }
+  #admin-panel .panel-sub {
+    color: rgba(255,255,255,0.4); font-size: 0.9rem; margin-bottom: 28px; letter-spacing: 0.08em;
+  }
+
+  .upload-zone {
+    border: 2px dashed rgba(25,118,210,0.35);
+    border-radius: 6px; padding: 36px;
+    text-align: center; cursor: pointer;
+    transition: all 0.3s; margin-bottom: 24px;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--gold);
+    background: rgba(25,118,210,0.08);
+  }
+  .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-zone .uz-icon { font-size: 2rem; margin-bottom: 10px; }
+  .upload-zone p { color: rgba(255,255,255,0.6); font-size: 0.88rem; }
+  .upload-zone span { color: var(--gold-light); }
+
+  .url-input-row {
+    display: flex; gap: 10px; margin-bottom: 20px;
+  }
+  .url-input-row input {
+    flex: 1; background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(25,118,210,0.3);
+    border-radius: 3px; padding: 11px 14px;
+    color: #fff; font-family: 'Jost', sans-serif;
+    font-size: 0.95rem; outline: none;
+    transition: border-color 0.3s;
+  }
+  .url-input-row input:focus { border-color: var(--gold); }
+  .url-input-row button {
+    background: var(--gold); color: var(--dark);
+    border: none; padding: 11px 20px;
+    font-family: 'Jost', sans-serif; font-weight: 600;
+    font-size: 0.9rem; cursor: pointer; border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .banner-images-list { margin-top: 4px; }
+  .banner-images-list h4 { color: rgba(255,255,255,0.6); font-size: 0.88rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
+
+  .banner-thumb {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(25,118,210,0.15);
+    border-radius: 4px; margin-bottom: 8px;
+  }
+  .banner-thumb img {
+    width: 60px; height: 40px;
+    object-fit: cover; border-radius: 2px;
+  }
+  .banner-thumb .bth-url {
+    flex: 1; color: rgba(255,255,255,0.6); font-size: 0.9rem;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .banner-thumb .bth-del {
+    background: none; border: 1px solid rgba(255,100,100,0.3);
+    color: rgba(255,100,100,0.7); padding: 4px 10px;
+    font-size: 0.85rem; border-radius: 2px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .banner-thumb .bth-del:hover { background: rgba(255,100,100,0.15); color: #ff8080; }
+
+  .admin-logout-btn {
+    margin-top: 24px; width: 100%;
+    background: none; border: 1px solid rgba(25,118,210,0.3);
+    color: rgba(255,255,255,0.5); padding: 10px;
+    font-family: 'Jost', sans-serif; font-size: 0.95rem;
+    letter-spacing: 0.1em; cursor: pointer; border-radius: 3px;
+    transition: all 0.3s;
+  }
+  .admin-logout-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  .empty-banner-msg { color: rgba(255,255,255,0.35); font-size: 0.95rem; text-align: center; padding: 16px 0; }
+
+  /* ── ADMIN TABS ── */
+  .admin-tabs {
+    display: flex; gap: 6px; margin-bottom: 24px;
+    border-bottom: 1px solid rgba(25,118,210,0.2);
+    padding-bottom: 0;
+  }
+  .admin-tab {
+    background: none; border: none;
+    color: rgba(255,255,255,0.45);
+    font-family: 'Jost', sans-serif; font-size: 0.88rem;
+    font-weight: 500; letter-spacing: 0.06em;
+    padding: 10px 18px 12px; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px; transition: all 0.2s;
+  }
+  .admin-tab:hover { color: rgba(255,255,255,0.75); }
+  .admin-tab.active {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold);
+  }
+
+  /* Testimonial form */
+  .testi-form { display: flex; flex-direction: column; gap: 10px; }
+  .testi-form input, .testi-form textarea {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(25,118,210,0.3);
+    border-radius: 3px; padding: 11px 14px;
+    color: #fff; font-family: 'Jost', sans-serif;
+    font-size: 0.95rem; outline: none;
+    transition: border-color 0.3s; resize: vertical;
+  }
+  .testi-form input:focus, .testi-form textarea:focus { border-color: var(--gold); }
+  .testi-form input::placeholder, .testi-form textarea::placeholder { color: rgba(255,255,255,0.35); }
+  .add-testi-btn {
+    background: linear-gradient(135deg, var(--gold), var(--saffron));
+    color: #fff; border: none; padding: 12px;
+    font-family: 'Jost', sans-serif; font-weight: 600;
+    font-size: 0.9rem; cursor: pointer; border-radius: 3px;
+    transition: opacity 0.2s; letter-spacing: 0.06em;
+  }
+  .add-testi-btn:hover { opacity: 0.88; }
+
+  .testi-admin-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(25,118,210,0.2);
+    border-radius: 4px; padding: 14px;
+    margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+  }
+  .testi-admin-item .tai-text { flex: 1; }
+  .testi-admin-item .tai-quote { color: rgba(255,255,255,0.7); font-size: 0.85rem; line-height: 1.6; font-style: italic; margin-bottom: 4px; }
+  .testi-admin-item .tai-author { color: var(--gold-light); font-size: 0.78rem; font-weight: 600; }
+
+  .messages-list{
+    margin-top:15px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+
+  .message-card{
+    background:white;
+    border:1px solid var(--border);
+    padding:16px;
+    border-radius:8px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+
+  .message-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .message-actions{
+    margin-top:8px;
+    display:flex;
+    gap:8px;
+  }
+
+  .message-actions button{
+    padding:6px 10px;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+  }
+
+  .btn-delete{
+    background:#ff5252;
+    color:white;
+  }
+
+  .btn-replied{
+    background:#2e7d32;
+    color:white;
+  }
+
+  .status-badge{
+    padding:4px 8px;
+    border-radius:4px;
+    font-size:12px;
+    color:white;
+  }
+
+  .status-new{
+    background:#ff9800;
+  }
+
+  .status-replied{
+    background:#4caf50;
+  }
+
+  /* ── RESPONSIVE ── */
+
+  /* Hamburger button (hidden on desktop) */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none; border: none; cursor: pointer;
+    padding: 6px; z-index: 9100;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--gold-light);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Mobile nav drawer */
+  .nav-drawer {
+    display: none;
+    position: fixed; top: 64px; left: 0; right: 0;
+    background: rgba(5,13,26,0.98);
+    backdrop-filter: blur(12px);
+    z-index: 8999;
+    flex-direction: column;
+    padding: 16px 0 24px;
+    border-bottom: 1px solid rgba(25,118,210,0.2);
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .nav-drawer.open {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .nav-drawer a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 13px 28px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav-drawer a:hover { color: var(--gold-light); background: rgba(25,118,210,0.08); }
+  .nav-drawer .drawer-admin {
+    margin: 16px 28px 0;
+    background: transparent;
+    border: 1px solid rgba(25,118,210,0.5);
+    color: var(--gold-light);
+    padding: 10px 16px;
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { gap: 18px; }
+    .nav-links a { font-size: 0.82rem; }
+  }
+
+  @media (max-width: 768px) {
+    body { font-size: 15px; }
+
+    /* Nav */
+    nav { padding: 0 18px; height: 60px; }
+    #home { margin-top: 60px; }
+    .nav-links, .nav-admin-btn { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-logo { font-size: 1.05rem; }
+
+    /* Banner */
+    #home { height: 75vh; min-height: 420px; }
+    .slide-content h1 { font-size: 1.8rem; line-height: 1.25; }
+    .slide-content .tagline { font-size: 1rem; }
+    .slide-content p { font-size: 0.85rem; }
+    .slider-arrow { width: 36px; height: 36px; font-size: 1.1rem; }
+    .slider-arrow.prev { left: 10px; }
+    .slider-arrow.next { right: 10px; }
+
+    /* Sections */
+    .container { padding: 0 18px; }
+    section { padding: 48px 0; }
+    .section-title { font-size: 1.9rem; }
+    .section-label { font-size: 0.7rem; }
+
+    /* About */
+    .about-grid { grid-template-columns: 1fr; gap: 24px; }
+    .aims-grid { grid-template-columns: 1fr; }
+    .aims-item { padding: 14px 16px; }
+
+    /* Objectives / Activities */
+    .obj-grid, .activities-grid { grid-template-columns: 1fr; gap: 16px; }
+
+    /* Gallery */
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+    /* Testimonials */
+    .testi-grid { grid-template-columns: 1fr; gap: 16px; }
+    .testi-card { padding: 22px 20px; }
+
+    /* Contact */
+    .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .contact-info-item { gap: 12px; }
+
+    /* Footer */
+    footer { padding: 28px 18px; text-align: center; font-size: 0.82rem; }
+
+    /* Admin panel */
+    #admin-panel {
+      width: 96vw !important;
+      max-width: 96vw !important;
+      max-height: 90vh;
+      padding: 20px 16px !important;
+      overflow-y: auto;
+    }
+    .admin-tabs { gap: 2px; }
+    .admin-tab { padding: 8px 10px 10px; font-size: 0.78rem; }
+    .banner-thumb { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .banner-thumb img { width: 100%; height: 120px; }
+
+    /* Login modal */
+    .login-box { width: 92vw !important; max-width: 92vw !important; padding: 28px 20px !important; }
+  }
+
+  @media (max-width: 420px) {
+    .slide-content h1 { font-size: 1.45rem; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.6rem; }
+    .admin-tab { padding: 7px 8px; font-size: 0.72rem; letter-spacing: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">KNR Charitable Trust</div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#objectives">Objectives</a></li>
+    <li><a href="#activities">Activities</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-admin-btn" onclick="openLoginModal()">Admin</button>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE NAV DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#home"        onclick="closeDrawer()">Home</a>
+  <a href="#about"       onclick="closeDrawer()">About Us</a>
+  <a href="#objectives"  onclick="closeDrawer()">Objectives</a>
+  <a href="#activities"  onclick="closeDrawer()">Activities</a>
+  <a href="#gallery"     onclick="closeDrawer()">Gallery</a>
+  <a href="#contact"     onclick="closeDrawer()">Contact</a>
+  <button class="drawer-admin" onclick="closeDrawer(); openLoginModal();">Admin Login</button>
+</div>
+
+<!-- HERO BANNER / SLIDER -->
+<section id="home">
+  <div class="slider-track" id="sliderTrack">
+    <!-- Slide 1: Default title slide -->
+    <div class="slide slide-placeholder">
+      <!-- Scenic SVG Background -->
+      <svg class="slide-bg-svg" viewBox="0 0 1440 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#050d1a"/>
+            <stop offset="40%" stop-color="#0a1525"/>
+            <stop offset="100%" stop-color="#0d2040"/>
+          </linearGradient>
+          <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0d2850"/>
+            <stop offset="100%" stop-color="#091d3a"/>
+          </linearGradient>
+          <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#122a5e"/>
+            <stop offset="100%" stop-color="#0a1e4a"/>
+          </linearGradient>
+          <linearGradient id="hillFront" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#07102a"/>
+            <stop offset="100%" stop-color="#02050f"/>
+          </linearGradient>
+          <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0d1e4a" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#07102a" stop-opacity="1"/>
+          </linearGradient>
+          <radialGradient id="glow" cx="50%" cy="28%" r="35%">
+            <stop offset="0%" stop-color="#4a7ab5" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#050d1a" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="blur2">
+            <feGaussianBlur stdDeviation="2"/>
+          </filter>
+          <filter id="blur1">
+            <feGaussianBlur stdDeviation="1"/>
+          </filter>
+        </defs>
+
+        <!-- Sky -->
+        <rect width="1440" height="700" fill="url(#sky)"/>
+        <!-- Atmospheric glow -->
+        <ellipse cx="720" cy="180" rx="520" ry="220" fill="url(#glow)"/>
+
+        <!-- Stars -->
+        <g opacity="0.5">
+          <circle cx="120" cy="60" r="1.2" fill="#bbdefb"/><circle cx="230" cy="40" r="0.9" fill="#90caf9"/>
+          <circle cx="380" cy="80" r="1.1" fill="#bbdefb"/><circle cx="510" cy="30" r="0.8" fill="#90caf9"/>
+          <circle cx="670" cy="55" r="1.3" fill="#bbdefb"/><circle cx="800" cy="25" r="1.0" fill="#90caf9"/>
+          <circle cx="950" cy="70" r="0.9" fill="#bbdefb"/><circle cx="1100" cy="45" r="1.2" fill="#90caf9"/>
+          <circle cx="1250" cy="65" r="1.0" fill="#bbdefb"/><circle cx="1380" cy="35" r="0.8" fill="#90caf9"/>
+          <circle cx="180" cy="100" r="0.7" fill="#bbdefb"/><circle cx="440" cy="115" r="0.8" fill="#90caf9"/>
+          <circle cx="760" cy="95" r="0.9" fill="#bbdefb"/><circle cx="1020" cy="110" r="0.7" fill="#90caf9"/>
+          <circle cx="1310" cy="90" r="1.0" fill="#bbdefb"/>
+        </g>
+
+        <!-- Moon / light source -->
+        <circle cx="1100" cy="100" r="38" fill="#0d2050" opacity="0.6"/>
+        <circle cx="1100" cy="100" r="28" fill="#1a3a80" opacity="0.5"/>
+        <circle cx="1100" cy="100" r="18" fill="#3a6ab5" opacity="0.4"/>
+
+        <!-- Far hills (blurred) -->
+        <path d="M0 420 Q180 260 360 310 Q540 360 720 270 Q900 180 1080 260 Q1260 340 1440 300 L1440 700 L0 700Z" fill="url(#hillFar)" filter="url(#blur2)" opacity="0.8"/>
+
+        <!-- Mid hills -->
+        <path d="M0 480 Q120 360 280 390 Q440 420 560 350 Q680 280 840 340 Q1000 400 1140 360 Q1280 320 1440 380 L1440 700 L0 700Z" fill="url(#hillMid)" filter="url(#blur1)"/>
+
+        <!-- Temple silhouette (center) -->
+        <g opacity="0.85" transform="translate(620,230)">
+          <!-- Main shikhara -->
+          <polygon points="100,0 110,30 120,55 130,75 140,90 60,90 70,75 80,55 90,30" fill="#050e2a"/>
+          <rect x="55" y="90" width="90" height="15" fill="#070f2e"/>
+          <rect x="50" y="105" width="100" height="12" fill="#09143a"/>
+          <rect x="45" y="117" width="110" height="10" fill="#050e2a"/>
+          <!-- Pillared hall -->
+          <rect x="30" y="127" width="140" height="60" fill="#070f2e"/>
+          <!-- Pillars -->
+          <rect x="38" y="127" width="8" height="60" fill="#0a1e4a"/>
+          <rect x="60" y="127" width="8" height="60" fill="#0a1e4a"/>
+          <rect x="82" y="127" width="8" height="60" fill="#0a1e4a"/>
+          <rect x="104" y="127" width="8" height="60" fill="#0a1e4a"/>
+          <rect x="126" y="127" width="8" height="60" fill="#0a1e4a"/>
+          <rect x="148" y="127" width="8" height="60" fill="#0a1e4a"/>
+          <!-- Entrance arch -->
+          <path d="M85 187 Q100 165 115 187" fill="#050e2a" stroke="#050e2a"/>
+          <rect x="85" y="167" width="30" height="20" fill="#02050f"/>
+          <!-- Smaller side spires -->
+          <polygon points="30,40 36,70 44,90 16,90 24,70" fill="#050e2a" transform="translate(-10,40)"/>
+          <rect x="10" y="90" width="40" height="8" fill="#070f2e" transform="translate(-10,40)"/>
+          <polygon points="130,40 136,70 144,90 116,90 124,70" fill="#050e2a" transform="translate(20,40)"/>
+          <rect x="110" y="90" width="40" height="8" fill="#070f2e" transform="translate(20,40)"/>
+          <!-- Flag on top -->
+          <line x1="100" y1="0" x2="100" y2="-20" stroke="#1565c0" stroke-width="1.5"/>
+          <polygon points="100,-20 115,-14 100,-8" fill="#1976d2" opacity="0.8"/>
+        </g>
+
+        <!-- Trees left cluster -->
+        <g opacity="0.9">
+          <rect x="80" y="420" width="12" height="110" fill="#070f2e"/>
+          <ellipse cx="86" cy="390" rx="38" ry="55" fill="#0d2850"/>
+          <ellipse cx="70" cy="405" rx="28" ry="42" fill="#102250"/>
+          <rect x="160" y="440" width="10" height="90" fill="#070f2e"/>
+          <ellipse cx="165" cy="415" rx="30" ry="48" fill="#0d2850"/>
+          <rect x="30" y="450" width="9" height="80" fill="#070f2e"/>
+          <ellipse cx="34" cy="428" rx="25" ry="38" fill="#0a1e4a"/>
+        </g>
+
+        <!-- Trees right cluster -->
+        <g opacity="0.9">
+          <rect x="1280" y="415" width="12" height="115" fill="#070f2e"/>
+          <ellipse cx="1286" cy="385" rx="40" ry="55" fill="#0d2850"/>
+          <rect x="1340" y="435" width="10" height="95" fill="#070f2e"/>
+          <ellipse cx="1345" cy="408" rx="32" ry="50" fill="#102250"/>
+          <rect x="1390" y="445" width="9" height="85" fill="#070f2e"/>
+          <ellipse cx="1395" cy="422" rx="26" ry="40" fill="#0a1e4a"/>
+          <rect x="1220" y="445" width="10" height="85" fill="#070f2e"/>
+          <ellipse cx="1225" cy="420" rx="28" ry="44" fill="#0d2850"/>
+        </g>
+
+        <!-- Lotus pond / water -->
+        <ellipse cx="720" cy="590" rx="320" ry="55" fill="url(#water)" opacity="0.7"/>
+        <!-- Lotus flowers -->
+        <g transform="translate(600,575)" opacity="0.7">
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1565c0" transform="rotate(-30)"/>
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1565c0" transform="rotate(30)"/>
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1976d2"/>
+          <circle cx="0" cy="-2" r="4" fill="#90caf9"/>
+        </g>
+        <g transform="translate(730,582)" opacity="0.7">
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1565c0" transform="rotate(-30)"/>
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1565c0" transform="rotate(30)"/>
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1976d2"/>
+          <circle cx="0" cy="-2" r="4" fill="#90caf9"/>
+        </g>
+        <g transform="translate(840,572)" opacity="0.6">
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1565c0" transform="rotate(-30)"/>
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1565c0" transform="rotate(30)"/>
+          <ellipse cx="0" cy="0" rx="10" ry="5" fill="#1976d2"/>
+          <circle cx="0" cy="-2" r="4" fill="#90caf9"/>
+        </g>
+        <!-- Water reflections -->
+        <line x1="500" y1="588" x2="580" y2="592" stroke="#1a3060" stroke-width="1" opacity="0.4"/>
+        <line x1="760" y1="595" x2="870" y2="590" stroke="#1a3060" stroke-width="1" opacity="0.4"/>
+        <line x1="620" y1="600" x2="720" y2="603" stroke="#1a3060" stroke-width="0.8" opacity="0.3"/>
+
+        <!-- Foreground ground -->
+        <path d="M0 580 Q360 530 720 545 Q1080 560 1440 530 L1440 700 L0 700Z" fill="url(#hillFront)"/>
+
+        <!-- Decorative vine / border top -->
+        <path d="M0 0 L1440 0 L1440 6 Q720 18 0 6Z" fill="#122a5e" opacity="0.6"/>
+
+        <!-- Subtle diagonal light rays -->
+        <g opacity="0.04">
+          <polygon points="1050,0 1150,0 900,700 800,700" fill="#90caf9"/>
+          <polygon points="1180,0 1220,0 980,700 940,700" fill="#90caf9"/>
+        </g>
+      </svg>
+
+      <div class="slide-overlay" style="background:linear-gradient(to bottom, rgba(5,10,20,0.3) 0%, rgba(5,10,20,0.45) 55%, rgba(5,10,20,0.78) 100%);"></div>
+      <div class="slide-content">
+        <h1>Kasireddy Narasimha Reddy<br>Charitable Trust</h1>
+        <p class="tagline">Serving Humanity with Devotion &amp; Grace</p>
+        <p style="margin-top:20px;">Pullampet Mandal · Tirupathi District · Andhra Pradesh</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="slider-arrow prev" onclick="prevSlide()">&#8249;</button>
+  <button class="slider-arrow next" onclick="nextSlide()">&#8250;</button>
+
+  <div class="slider-dots" id="sliderDots">
+    <button class="dot active" onclick="goToSlide(0)"></button>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">Who We Are</div>
+        <h2 class="section-title">About the Trust</h2>
+        <div class="divider"></div>
+        <p>The <strong>Kasireddy Narasimha Reddy Charitable Trust</strong> is a public charitable organization established to promote the spiritual, physical, mental, and educational development of all people — without distinction of caste, creed, or religion.</p>
+        <p>We promote welfare, social, cultural, charitable, health, education, humanitarian, and relief activities that protect, safeguard, and improve the quality of human life — particularly for economically weaker sections of society — so that they may lead healthy, happy, contented, and dignified lives.</p>
+      </div>
+      <div>
+        <div class="trustees-box">
+          <h3>Executive Board of Trustees &amp; Founder Members</h3>
+          <div class="trustee-item">
+            <div class="name">Kasireddy Venkata Narasimha Pratap Reddy</div>
+            <div class="role">Managing Trustee &nbsp;·&nbsp; Founder</div>
+          </div>
+          <div class="trustee-item">
+            <div class="name">Atoori Reshmi</div>
+            <div class="role">Trustee &nbsp;·&nbsp; Founder Member</div>
+          </div>
+          <div class="trustee-item" style="padding-top:20px;">
+            <div class="name" style="color:rgba(255,255,255,0.65); font-size:1.0rem; line-height:1.7; font-weight:400;">
+              The beneficiaries of this Trust shall be the public at large, focusing on charitable, educational, medical, and other welfare activities.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Aims & Objects - Full Section -->
+    <div style="margin-top: 64px;">
+      <div class="section-label">Our Foundation</div>
+      <h2 class="section-title" style="margin-bottom:12px;">Aims &amp; Objectives</h2>
+      <div class="divider"></div>
+      <p style="color:var(--muted); max-width:750px; margin-bottom:48px; font-size:1.05rem; line-height:1.85;">
+        The Trust is organised for the promotion and upliftment of adults and children of all ages, irrespective of caste, creed, race, colour, sex, or religion, in the interest of mankind in general.
+      </p>
+      <div class="aims-grid">
+        <div class="aim-card">
+          <div class="aim-num">01</div>
+          <div class="aim-body">
+            <h4>Welfare &amp; Humanitarian Activities</h4>
+            <p>Promote welfare, social, cultural, charitable, health, education, humanitarian, and relief activities that protect, safeguard, and raise the standard of human life, particularly for economically weaker sections of society.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">02</div>
+          <div class="aim-body">
+            <h4>Medical &amp; Rehabilitation Centers</h4>
+            <p>Help and collaborate in establishing and running medical centers, old age homes, ashrams, rehabilitation institutions for the destitute, vocational training centers for the handicapped, and self job-oriented activities for the unemployed.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">03</div>
+          <div class="aim-body">
+            <h4>Scholarships &amp; Higher Education</h4>
+            <p>Offer scholarships, stipends, and financial support to deserving students pursuing higher studies in Medicine, Arts, Science, Engineering, and Computer Technology.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">04</div>
+          <div class="aim-body">
+            <h4>Peace, Tolerance &amp; National Integration</h4>
+            <p>Undertake and support programs that provide educational, recreational, social, cultural, and spiritual activities with the sole purpose of promoting peace, love, tolerance, and national integration among various communities and nationalities.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">05</div>
+          <div class="aim-body">
+            <h4>Sponsorship of Institutional Care</h4>
+            <p>Sponsorship of economically weak persons for institutional care, ensuring the most vulnerable members of society receive the support and dignity they deserve.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">06</div>
+          <div class="aim-body">
+            <h4>Collaboration with Voluntary Organizations</h4>
+            <p>Collaborate with other voluntary organizations, NGOs, and social groups to collectively accomplish the stated objects and extend the reach of the Trust's mission.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">07</div>
+          <div class="aim-body">
+            <h4>Affiliation with National &amp; International Bodies</h4>
+            <p>Affiliate with national and international organizations engaged in welfare, health education, national integration, and peace-promotion activities to strengthen the Trust's global impact.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">08</div>
+          <div class="aim-body">
+            <h4>Government &amp; NGO Dialogue</h4>
+            <p>Maintain regular dialogue and rapport with Central and State Governments and NGOs to elicit support and cooperation in fulfilling the aims and objects of the Trust.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">09</div>
+          <div class="aim-body">
+            <h4>Acquisition of Property</h4>
+            <p>Acquire immovable and movable properties by purchase, lease, mortgage, gifts, grants, legacy, bequest, or exchange from any person, company, society, government, or cooperative body to further the objectives of the Trust.</p>
+          </div>
+        </div>
+        <div class="aim-card">
+          <div class="aim-num">10</div>
+          <div class="aim-body">
+            <h4>Construction &amp; Infrastructure</h4>
+            <p>Erect and build residential complexes, hostels, hospitals, and other structures to further the objects of the Trust, and maintain, manage, control, improve, alter, repair, or reconstruct the same as needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OBJECTIVES -->
+<section id="objectives">
+  <div class="container">
+    <div class="section-label">Our Purpose</div>
+    <h2 class="section-title">Main Objectives</h2>
+    <div class="divider"></div>
+    <p style="color:var(--muted); max-width:650px; margin-bottom:40px; font-size:1.05rem; line-height:1.8;">ప్రాధాన్యతా అంశాలు — Our priority areas of service and welfare for the community.</p>
+    <div class="objectives-grid">
+      <div class="obj-card"><div class="icon">🏠</div><h4>Human Palliative Center</h4><p>వృద్దాశ్రమము — Establishing a caring home for the elderly and those in need of palliative support.</p></div>
+      <div class="obj-card"><div class="icon">🐄</div><h4>Cows Palliative Center</h4><p>గో సంరక్షణ క్షేత్రం — A sanctuary dedicated to the protection and care of cows.</p></div>
+      <div class="obj-card"><div class="icon">💒</div><h4>Free Kalyana Mandapam</h4><p>వివాహ వేధిక — Providing a free marriage hall to support families in conducting weddings.</p></div>
+      <div class="obj-card"><div class="icon">🧘</div><h4>Meditation Center</h4><p>ధ్యాన కేంద్రం — Developing a center for peace, spiritual well-being, and inner growth.</p></div>
+      <div class="obj-card"><div class="icon">📖</div><h4>Veda Paatshala</h4><p>వేద పాఠశాల — Conducting Vedic education to preserve and propagate ancient knowledge.</p></div>
+      <div class="obj-card"><div class="icon">🚑</div><h4>Trauma Center</h4><p>అత్యవసర చికిత్సా కేంద్రం — An emergency medical care center for accident victims and the needy.</p></div>
+      <div class="obj-card"><div class="icon">🌳</div><h4>Vruksha Seva</h4><p>వృక్షాలు నాటించడం — Tree plantation drives for environmental conservation and a greener planet.</p></div>
+      <div class="obj-card"><div class="icon">🍱</div><h4>Anna Prasadam</h4><p>ప్రసాద వితరణ — Free food distribution to the poor and hungry as an act of devotion.</p></div>
+      <div class="obj-card"><div class="icon">💧</div><h4>Jala Prasadam</h4><p>త్రాగు నీటి సరఫరా — Providing clean drinking water to communities lacking access.</p></div>
+      <div class="obj-card"><div class="icon">🕉</div><h4>Gitaa Yagnam &amp; Theerta Yatra</h4><p>గీతా యజ్ఞం, పితృ తర్పణం — Organizing spiritual yagnas, ancestral rites, and sacred pilgrimages.</p></div>
+      <div class="obj-card"><div class="icon">💻</div><h4>Computer Education</h4><p>కంప్యూటర్ల పరిజ్ఞానం — Establishing digital literacy centers to empower youth with modern skills.</p></div>
+      <div class="obj-card"><div class="icon">🏆</div><h4>Merit Scholarships</h4><p>ప్రతిభా పురస్కారాలు — Providing financial support to deserving students for higher education.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRESENT ACTIVITIES -->
+<section id="activities">
+  <div class="container">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Present Activities</h2>
+    <div class="divider"></div>
+    <div class="activities-grid">
+      <div class="activity-card">
+        <div class="act-icon">🛕</div>
+        <h3>Hanuman Temple</h3>
+        <p>A sacred place of worship and community gathering, fostering devotion, peace, and spiritual energy for all devotees.</p>
+      </div>
+      <div class="activity-card">
+        <div class="act-icon">📚</div>
+        <h3>Knowledge Center</h3>
+        <p>An educational hub providing learning resources, computer training, and academic support to empower students and youth.</p>
+      </div>
+      <div class="activity-card">
+        <div class="act-icon">🐄</div>
+        <h3>Gou Shala</h3>
+        <p>A dedicated shelter and care facility for cows, rooted in our tradition of reverence and compassion toward all living beings.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-label">Community Voices</div>
+    <h2 class="section-title">Testimonials</h2>
+    <div class="divider"></div>
+    <div class="testi-grid" id="testiGrid">
+      <div class="testi-card">
+        <p>The KNR Trust's scholarship program changed my daughter's life. She is now studying engineering because of their generous support.</p>
+        <div class="author">Ravi Kumar</div>
+        <div class="author-loc">Pullampet, Andhra Pradesh</div>
+      </div>
+      <div class="testi-card">
+        <p>Their Anna Prasadam service feeds hundreds every week. The dedication and love with which they serve is truly inspiring and divine.</p>
+        <div class="author">Sarada Devi</div>
+        <div class="author-loc">Tirupathi District</div>
+      </div>
+      <div class="testi-card">
+        <p>The Gou Shala is a beautiful initiative. The trust's commitment to protecting cows reflects their deep values and spiritual mission.</p>
+        <div class="author">Venkat Rao</div>
+        <div class="author-loc">Puttanavaripalli Village</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-label">Our Moments</div>
+    <h2 class="section-title">Gallery</h2>
+    <div class="divider"></div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-placeholder"><span>🛕</span>Hanuman Temple</div>
+      <div class="gallery-placeholder"><span>🐄</span>Gou Shala</div>
+      <div class="gallery-placeholder"><span>📚</span>Knowledge Center</div>
+      <div class="gallery-placeholder"><span>🍱</span>Anna Prasadam</div>
+      <div class="gallery-placeholder"><span>🌳</span>Vruksha Seva</div>
+      <div class="gallery-placeholder"><span>🎓</span>Scholarships</div>
+      <div class="gallery-placeholder"><span>💧</span>Jala Prasadam</div>
+      <div class="gallery-placeholder"><span>🕉</span>Spiritual Events</div>
+    </div>
+    <p class="gallery-note">Admin can upload event photos via the Admin panel. Photos will appear here automatically.</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Reach Out</div>
+    <h2 class="section-title">Contact Us</h2>
+    <div class="divider"></div>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-info-item">
+          <div class="c-icon">📍</div>
+          <div>
+            <h4>Address</h4>
+            <p>2-31, KNR Gardens, Puttanavaripalli,<br>Pullampet Mandal, Tirupathi District,<br>Andhra Pradesh, India. Pin: 516107</p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="c-icon">📧</div>
+          <div>
+            <h4>Email</h4>
+            <p><span id="knrEmail"></span></p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="c-icon">📞</div>
+          <div>
+            <h4>Mobile</h4>
+            <p><a href="tel:+916309090909">+91 63090 90909</a></p>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="c-icon">🌐</div>
+          <div>
+            <h4>Website</h4>
+            <p><a href="https://www.knrcharity.org" target="_blank">www.knrcharity.org</a></p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="contact-form">
+          <input id="contactName" type="text" placeholder="Your Name">
+          <input id="contactContact" type="text" placeholder="Email or Phone">
+          <textarea id="contactMessage" placeholder="Your message or query…"></textarea>
+          <button onclick="sendMessage()">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Whatsapp -->
+<a href="https://wa.me/919989811135?text=Hello%20I%20would%20like%20to%20know%20more%20about%20KNR%20Charitable%20Trust"
+   class="whatsapp-float"
+   target="_blank">
+   <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="35">
+</a>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>Kasireddy Narasimha Reddy Charitable Trust</span> · All rights reserved · <a href="https://www.knrcharity.org" style="color:var(--gold-light); text-decoration:none;">knrcharity.org</a></p>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLoginModal()">✕</button>
+    <h2>Admin Login</h2>
+    <div class="modal-sub">KNR Charitable Trust · Admin Portal</div>
+    <input type="text" id="loginUser" placeholder="Username" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="password" id="loginPass" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="modal-error" id="loginError">Incorrect username or password.</div>
+    <button class="modal-login-btn" onclick="doLogin()">Login</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL MODAL -->
+<div class="modal-overlay" id="adminPanelModal">
+  <div id="admin-panel">
+    <button class="modal-close" onclick="closeAdminPanel()">✕</button>
+    <h2>Admin Panel</h2>
+    <div class="panel-sub">KNR Charitable Trust · Content Manager</div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('banner',this)">🖼 Banner</button>
+      <button class="admin-tab" onclick="switchTab('gallery',this)">📷 Gallery</button>
+      <button class="admin-tab" onclick="switchTab('testimonials',this)">💬 Testimonials</button>
+    </div>
+
+    <!-- ── TAB: BANNER ── -->
+    <div class="admin-tab-content" id="tab-banner">
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" accept="image/*" multiple id="fileInput" onchange="handleFileUpload(event,'banner')">
+        <div class="uz-icon">📸</div>
+        <p>Drag &amp; drop images here, or <span>click to browse</span></p>
+        <p style="font-size:0.88rem; margin-top:6px; color:rgba(255,255,255,0.3);">JPG, PNG, WEBP supported</p>
+      </div>
+      <div class="url-input-row">
+        <input type="text" id="bannerUrlInput" placeholder="Or paste an image URL here…">
+        <button onclick="addImageByUrl('banner')">Add URL</button>
+      </div>
+      <div class="banner-images-list">
+        <h4>Current Banner Images</h4>
+        <div id="bannerThumbList"></div>
+      </div>
+    </div>
+
+    <!-- ── TAB: GALLERY ── -->
+    <div class="admin-tab-content" id="tab-gallery" style="display:none;">
+      <div class="upload-zone" id="galleryUploadZone">
+        <input type="file" accept="image/*" multiple id="galleryFileInput" onchange="handleFileUpload(event,'gallery')">
+        <div class="uz-icon">🖼</div>
+        <p>Drag &amp; drop gallery images, or <span>click to browse</span></p>
+        <p style="font-size:0.88rem; margin-top:6px; color:rgba(255,255,255,0.3);">JPG, PNG, WEBP supported</p>
+      </div>
+      <div class="url-input-row">
+        <input type="text" id="galleryUrlInput" placeholder="Or paste an image URL here…">
+        <button onclick="addImageByUrl('gallery')">Add URL</button>
+      </div>
+      <div class="banner-images-list">
+        <h4>Current Gallery Images</h4>
+        <div id="galleryThumbList"></div>
+      </div>
+    </div>
+
+    <!-- ── TAB: TESTIMONIALS ── -->
+    <div class="admin-tab-content" id="tab-testimonials" style="display:none;">
+      <div class="testi-form">
+        <input type="text" id="testiName" placeholder="Person's Name *">
+        <input type="text" id="testiLoc" placeholder="Location (e.g. Tirupathi, AP)">
+        <textarea id="testiMsg" placeholder="Testimonial message *" rows="4"></textarea>
+        <button class="add-testi-btn" onclick="addTestimonial()">+ Add Testimonial</button>
+      </div>
+      <div class="banner-images-list" style="margin-top:20px;">
+        <h4>Current Testimonials</h4>
+        <div id="testiAdminList"></div>
+      </div>
+    </div>
+
+    <!-- CONTACT MESSAGES -->
+    <div class="admin-section">
+      <h3>Contact Messages</h3>
+
+      <div id="messagesList" class="messages-list">
+        <p>Loading messages...</p>
+      </div>
+    </div>
+
+    <button class="admin-logout-btn" onclick="logout()">🚪 Logout</button>
+  </div>
+</div>
+
+<!-- Hamburger / mobile drawer -->
+<script>
+function toggleDrawer() {
+  var drawer = document.getElementById('navDrawer');
+  var burger = document.getElementById('hamburger');
+  drawer.classList.toggle('open');
+  burger.classList.toggle('open');
+}
+function closeDrawer() {
+  document.getElementById('navDrawer').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+window.toggleDrawer = toggleDrawer;
+window.closeDrawer  = closeDrawer;
+</script>
+
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, updateDoc }
+                          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyAYJMVedqg-06cX_Aw-fUvigTVBu7vPQIU",
+  authDomain:        "knr-charitable-trust-project.firebaseapp.com",
+  projectId:         "knr-charitable-trust-project",
+  messagingSenderId: "811363743855",
+  appId:             "1:811363743855:web:d0443058453c4cbaa1b59a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── STATE ──
+let currentSlide  = 0;
+let bannerImages  = [];
+let galleryImages = [];
+let testimonials  = [];
+let autoSlideTimer;
+
+// ── STATUS TOAST ──
+function setStatus(msg, isError) {
+  let el = document.getElementById('fb-status');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'fb-status';
+    el.style.cssText = 'position:fixed;bottom:20px;right:20px;z-index:99999;padding:10px 18px;border-radius:4px;font-family:Jost,sans-serif;font-size:0.85rem;font-weight:500;transition:opacity 0.5s;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.background = isError ? '#b71c1c' : '#0d47a1';
+  el.style.color = '#fff';
+  el.style.opacity = '1';
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.style.opacity = '0'; }, 3500);
+}
+
+// ── IMAGE → BASE64 (compress aggressively to stay under Firestore 1MB limit) ──
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = function() {
+        const MAX_W = 1000;
+        const scale = Math.min(1, MAX_W / img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width  = Math.round(img.width  * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        let quality = 0.75;
+        let b64 = canvas.toDataURL('image/jpeg', quality);
+        // Keep halving quality until under 700KB
+        while (b64.length > 700000 && quality > 0.1) {
+          quality -= 0.15;
+          b64 = canvas.toDataURL('image/jpeg', Math.max(quality, 0.1));
+        }
+        if (b64.length > 900000) {
+          reject(new Error('Image too large even after compression. Please use a smaller image or paste a URL instead.'));
+        } else {
+          resolve(b64);
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── CONTACT FORM FIRESTORE SAVE ──
+async function sendMessage() {
+
+  const name = document.getElementById("contactName").value.trim();
+  const contact = document.getElementById("contactContact").value.trim();
+  const message = document.getElementById("contactMessage").value.trim();
+
+  if (!name || !message) {
+    alert("Please enter your name and message.");
+    return;
+  }
+
+  try {
+
+    await addDoc(collection(db, "contactMessages"), {
+      name: name,
+      contact: contact,
+      message: message,
+      createdAt: new Date()
+    });
+
+    alert("Thank you! Your message has been sent.");
+
+    document.getElementById("contactName").value = "";
+    document.getElementById("contactContact").value = "";
+    document.getElementById("contactMessage").value = "";
+
+  } catch (error) {
+    console.error("Error saving message:", error);
+    alert("Error sending message.");
+  }
+
+}
+
+// LOAD CONTACT MESSAGES
+function loadMessages(){
+
+  const container = document.getElementById("messagesList");
+
+  const q = query(
+    collection(db,"contactMessages"),
+    orderBy("createdAt","desc")
+  );
+
+  onSnapshot(q,(snapshot)=>{
+
+    container.innerHTML="";
+
+    if(snapshot.empty){
+      container.innerHTML="<p>No messages yet</p>";
+      return;
+    }
+
+    snapshot.forEach(docItem=>{
+
+      const data = docItem.data();
+      const id = docItem.id;
+
+      const status = data.status || "new";
+
+      const div=document.createElement("div");
+      div.className="message-card";
+
+      div.innerHTML=`
+
+        <div class="message-header">
+
+          <div>
+            <strong>${data.name}</strong><br>
+            <small>${data.contact || ""}</small>
+          </div>
+
+          <span class="status-badge ${status==="replied" ? "status-replied":"status-new"}">
+            ${status==="replied" ? "Replied":"New"}
+          </span>
+
+        </div>
+
+        <p>${data.message}</p>
+
+        <div class="message-actions">
+
+          <button class="btn-replied" onclick="markReplied('${id}')">
+            Mark Replied
+          </button>
+
+          <button class="btn-delete" onclick="deleteMessage('${id}')">
+            Delete
+          </button>
+
+        </div>
+      `;
+
+      container.appendChild(div);
+
+    });
+
+  });
+
+}
+
+async function deleteMessage(id){
+
+  if(!confirm("Delete this message?")) return;
+
+  await deleteDoc(doc(db,"contactMessages",id));
+
+}
+
+async function markReplied(id){
+
+  await updateDoc(
+    doc(db,"contactMessages",id),
+    {
+      status:"replied"
+    }
+  );
+
+}
+
+// ── REAL-TIME FIRESTORE LISTENERS ──
+function startListeners() {
+  onSnapshot(
+    query(collection(db, 'banner'), orderBy('createdAt')),
+    function(snap) {
+      bannerImages = snap.docs.map(function(d) { return { id: d.id, src: d.data().url }; });
+      renderSlider();
+      if (document.getElementById('admin-panel') && document.getElementById('admin-panel').classList.contains('open')) {
+        renderBannerThumbs();
+      }
+    },
+    function(err) { setStatus('Firestore error: ' + err.message, true); }
+  );
+  onSnapshot(
+    query(collection(db, 'gallery'), orderBy('createdAt')),
+    function(snap) {
+      galleryImages = snap.docs.map(function(d) { return { id: d.id, src: d.data().url }; });
+      renderGallery();
+      if (document.getElementById('admin-panel') && document.getElementById('admin-panel').classList.contains('open')) {
+        renderGalleryThumbList();
+      }
+    },
+    function(err) { setStatus('Firestore error: ' + err.message, true); }
+  );
+  onSnapshot(
+    query(collection(db, 'testimonials'), orderBy('createdAt')),
+    function(snap) {
+      testimonials = snap.docs.map(function(d) { return Object.assign({ id: d.id }, d.data()); });
+      renderTestimonials();
+      if (document.getElementById('admin-panel') && document.getElementById('admin-panel').classList.contains('open')) {
+        renderTestiAdminList();
+      }
+    },
+    function(err) { setStatus('Firestore error: ' + err.message, true); }
+  );
+}
+
+// ── BANNER CRUD ──
+async function saveBannerImage(file) {
+  try {
+    showUploadProgress('banner', true);
+    setStatus('Processing image...');
+    const url = await fileToBase64(file);
+    await addDoc(collection(db, 'banner'), { url: url, createdAt: Date.now() });
+    setStatus('Banner image saved!');
+  } catch(err) {
+    setStatus('Error: ' + err.message, true);
+  } finally {
+    showUploadProgress('banner', false);
+  }
+}
+
+async function saveBannerUrl(url) {
+  try {
+    await addDoc(collection(db, 'banner'), { url: url, createdAt: Date.now() });
+    setStatus('Banner URL added!');
+  } catch(err) { setStatus('Error: ' + err.message, true); }
+}
+
+async function removeBannerImage(id) {
+  try {
+    await deleteDoc(doc(db, 'banner', id));
+    setStatus('Removed.');
+  } catch(err) { setStatus('Error: ' + err.message, true); }
+}
+
+// ── GALLERY CRUD ──
+async function saveGalleryImage(file) {
+  try {
+    showUploadProgress('gallery', true);
+    setStatus('Processing image...');
+    const url = await fileToBase64(file);
+    await addDoc(collection(db, 'gallery'), { url: url, createdAt: Date.now() });
+    setStatus('Gallery image saved!');
+  } catch(err) {
+    setStatus('Error: ' + err.message, true);
+  } finally {
+    showUploadProgress('gallery', false);
+  }
+}
+
+async function saveGalleryUrl(url) {
+  try {
+    await addDoc(collection(db, 'gallery'), { url: url, createdAt: Date.now() });
+    setStatus('Gallery URL added!');
+  } catch(err) { setStatus('Error: ' + err.message, true); }
+}
+
+async function removeGalleryImage(id) {
+  try {
+    await deleteDoc(doc(db, 'gallery', id));
+    setStatus('Removed.');
+  } catch(err) { setStatus('Error: ' + err.message, true); }
+}
+
+// ── TESTIMONIAL CRUD ──
+async function addTestimonial() {
+  const name = document.getElementById('testiName').value.trim();
+  const loc  = document.getElementById('testiLoc').value.trim();
+  const msg  = document.getElementById('testiMsg').value.trim();
+  if (!name || !msg) { alert('Please fill in the name and message fields.'); return; }
+  try {
+    await addDoc(collection(db, 'testimonials'), { name: name, loc: loc, msg: msg, createdAt: Date.now() });
+    setStatus('Testimonial saved!');
+    document.getElementById('testiName').value = '';
+    document.getElementById('testiLoc').value  = '';
+    document.getElementById('testiMsg').value  = '';
+  } catch(err) { setStatus('Error: ' + err.message, true); }
+}
+
+async function removeTestimonial(id) {
+  try {
+    await deleteDoc(doc(db, 'testimonials', id));
+    setStatus('Testimonial removed.');
+  } catch(err) { setStatus('Error: ' + err.message, true); }
+}
+
+// ── FILE / URL HANDLERS ──
+function handleFileUpload(e, target) {
+  Array.from(e.target.files).forEach(function(file) {
+    if (target === 'banner') saveBannerImage(file);
+    else saveGalleryImage(file);
+  });
+  e.target.value = '';
+}
+
+function addImageByUrl(target) {
+  const inputId = target === 'banner' ? 'bannerUrlInput' : 'galleryUrlInput';
+  const url = document.getElementById(inputId).value.trim();
+  if (!url) return;
+  if (target === 'banner') saveBannerUrl(url);
+  else saveGalleryUrl(url);
+  document.getElementById(inputId).value = '';
+}
+
+function showUploadProgress(target, show) {
+  const zoneId = target === 'banner' ? 'uploadZone' : 'galleryUploadZone';
+  const zone = document.getElementById(zoneId);
+  if (zone) zone.style.opacity = show ? '0.5' : '1';
+}
+
+// ── SLIDER ──
+function renderSlider() {
+  const track = document.getElementById('sliderTrack');
+  const dots  = document.getElementById('sliderDots');
+  const slides = [null].concat(bannerImages);
+  track.innerHTML = '';
+  dots.innerHTML  = '';
+  slides.forEach(function(img, i) {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    if (img) {
+      slide.style.backgroundImage = "url('" + img.src + "')";
+      slide.innerHTML = '<div class="slide-overlay"></div>';
+    } else {
+      slide.classList.add('slide-placeholder');
+      slide.innerHTML = `
+        <svg class="slide-bg-svg" viewBox="0 0 1440 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="rsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#050d1a"/><stop offset="40%" stop-color="#0a1525"/><stop offset="100%" stop-color="#0d2040"/></linearGradient>
+            <linearGradient id="rhillFar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d2850"/><stop offset="100%" stop-color="#091d3a"/></linearGradient>
+            <linearGradient id="rhillMid" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#122a5e"/><stop offset="100%" stop-color="#0a1e4a"/></linearGradient>
+            <linearGradient id="rhillFront" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#07102a"/><stop offset="100%" stop-color="#02050f"/></linearGradient>
+            <linearGradient id="rwater" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d1e4a" stop-opacity="0.9"/><stop offset="100%" stop-color="#07102a" stop-opacity="1"/></linearGradient>
+            <radialGradient id="rglow" cx="50%" cy="28%" r="35%"><stop offset="0%" stop-color="#4a7ab5" stop-opacity="0.25"/><stop offset="100%" stop-color="#050d1a" stop-opacity="0"/></radialGradient>
+            <filter id="rblur2"><feGaussianBlur stdDeviation="2"/></filter>
+            <filter id="rblur1"><feGaussianBlur stdDeviation="1"/></filter>
+          </defs>
+          <rect width="1440" height="700" fill="url(#rsky)"/>
+          <ellipse cx="720" cy="180" rx="520" ry="220" fill="url(#rglow)"/>
+          <g opacity="0.5"><circle cx="120" cy="60" r="1.2" fill="#bbdefb"/><circle cx="230" cy="40" r="0.9" fill="#90caf9"/><circle cx="380" cy="80" r="1.1" fill="#bbdefb"/><circle cx="510" cy="30" r="0.8" fill="#90caf9"/><circle cx="670" cy="55" r="1.3" fill="#bbdefb"/><circle cx="800" cy="25" r="1.0" fill="#90caf9"/><circle cx="950" cy="70" r="0.9" fill="#bbdefb"/><circle cx="1100" cy="45" r="1.2" fill="#90caf9"/><circle cx="1250" cy="65" r="1.0" fill="#bbdefb"/><circle cx="1380" cy="35" r="0.8" fill="#90caf9"/></g>
+          <circle cx="1100" cy="100" r="38" fill="#0d2050" opacity="0.6"/><circle cx="1100" cy="100" r="28" fill="#1a3a80" opacity="0.5"/><circle cx="1100" cy="100" r="18" fill="#3a6ab5" opacity="0.4"/>
+          <path d="M0 420 Q180 260 360 310 Q540 360 720 270 Q900 180 1080 260 Q1260 340 1440 300 L1440 700 L0 700Z" fill="url(#rhillFar)" filter="url(#rblur2)" opacity="0.8"/>
+          <path d="M0 480 Q120 360 280 390 Q440 420 560 350 Q680 280 840 340 Q1000 400 1140 360 Q1280 320 1440 380 L1440 700 L0 700Z" fill="url(#rhillMid)" filter="url(#rblur1)"/>
+          <g opacity="0.85" transform="translate(620,230)"><polygon points="100,0 110,30 120,55 130,75 140,90 60,90 70,75 80,55 90,30" fill="#050e2a"/><rect x="55" y="90" width="90" height="15" fill="#070f2e"/><rect x="50" y="105" width="100" height="12" fill="#09143a"/><rect x="45" y="117" width="110" height="10" fill="#050e2a"/><rect x="30" y="127" width="140" height="60" fill="#070f2e"/><rect x="38" y="127" width="8" height="60" fill="#0a1e4a"/><rect x="60" y="127" width="8" height="60" fill="#0a1e4a"/><rect x="82" y="127" width="8" height="60" fill="#0a1e4a"/><rect x="104" y="127" width="8" height="60" fill="#0a1e4a"/><rect x="126" y="127" width="8" height="60" fill="#0a1e4a"/><rect x="148" y="127" width="8" height="60" fill="#0a1e4a"/><path d="M85 187 Q100 165 115 187" fill="#050e2a"/><rect x="85" y="167" width="30" height="20" fill="#02050f"/><polygon points="30,40 36,70 44,90 16,90 24,70" fill="#050e2a" transform="translate(-10,40)"/><rect x="10" y="90" width="40" height="8" fill="#070f2e" transform="translate(-10,40)"/><polygon points="130,40 136,70 144,90 116,90 124,70" fill="#050e2a" transform="translate(20,40)"/><rect x="110" y="90" width="40" height="8" fill="#070f2e" transform="translate(20,40)"/><line x1="100" y1="0" x2="100" y2="-20" stroke="#1565c0" stroke-width="1.5"/><polygon points="100,-20 115,-14 100,-8" fill="#1976d2" opacity="0.8"/></g>
+          <g opacity="0.9"><rect x="80" y="420" width="12" height="110" fill="#070f2e"/><ellipse cx="86" cy="390" rx="38" ry="55" fill="#0d2850"/><ellipse cx="70" cy="405" rx="28" ry="42" fill="#102250"/><rect x="160" y="440" width="10" height="90" fill="#070f2e"/><ellipse cx="165" cy="415" rx="30" ry="48" fill="#0d2850"/><rect x="30" y="450" width="9" height="80" fill="#070f2e"/><ellipse cx="34" cy="428" rx="25" ry="38" fill="#091d3a"/></g>
+          <g opacity="0.9"><rect x="1280" y="415" width="12" height="115" fill="#070f2e"/><ellipse cx="1286" cy="385" rx="40" ry="55" fill="#0d2850"/><rect x="1340" y="435" width="10" height="95" fill="#070f2e"/><ellipse cx="1345" cy="408" rx="32" ry="50" fill="#102250"/><rect x="1390" y="445" width="9" height="85" fill="#070f2e"/><ellipse cx="1395" cy="422" rx="26" ry="40" fill="#091d3a"/><rect x="1220" y="445" width="10" height="85" fill="#070f2e"/><ellipse cx="1225" cy="420" rx="28" ry="44" fill="#0d2850"/></g>
+          <ellipse cx="720" cy="590" rx="320" ry="55" fill="url(#rwater)" opacity="0.7"/>
+          <path d="M0 580 Q360 530 720 545 Q1080 560 1440 530 L1440 700 L0 700Z" fill="url(#rhillFront)"/>
+          <g opacity="0.04"><polygon points="1050,0 1150,0 900,700 800,700" fill="#90caf9"/><polygon points="1180,0 1220,0 980,700 940,700" fill="#90caf9"/></g>
+        </svg>
+        <div class="slide-overlay" style="background:linear-gradient(to bottom, rgba(5,10,20,0.3) 0%, rgba(5,10,20,0.45) 55%, rgba(5,10,20,0.78) 100%);"></div>
+        <div class="slide-content">
+          <h1>Kasireddy Narasimha Reddy<br>Charitable Trust</h1>
+          <p class="tagline">Serving Humanity with Devotion &amp; Grace</p>
+          <p style="margin-top:20px;">Pullampet Mandal &middot; Tirupathi District &middot; Andhra Pradesh</p>
+        </div>`;
+    }
+    track.appendChild(slide);
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i === currentSlide ? ' active' : '');
+    dot.onclick = (function(idx) { return function() { goToSlide(idx); }; })(i);
+    dots.appendChild(dot);
+  });
+  goToSlide(Math.min(currentSlide, slides.length - 1));
+}
+
+function goToSlide(n) {
+  const track = document.getElementById('sliderTrack');
+  const dots  = document.querySelectorAll('.dot');
+  const total = 1 + bannerImages.length;
+  currentSlide = ((n % total) + total) % total;
+  track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+  dots.forEach(function(d, i) { d.classList.toggle('active', i === currentSlide); });
+  resetAutoSlide();
+}
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+function resetAutoSlide() {
+  clearInterval(autoSlideTimer);
+  autoSlideTimer = setInterval(function() { nextSlide(); }, 5000);
+}
+
+// ── GALLERY RENDER ──
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  if (galleryImages.length === 0) {
+    grid.innerHTML =
+      '<div class="gallery-placeholder"><span>🛕</span>Hanuman Temple</div>' +
+      '<div class="gallery-placeholder"><span>🐄</span>Gou Shala</div>' +
+      '<div class="gallery-placeholder"><span>📚</span>Knowledge Center</div>' +
+      '<div class="gallery-placeholder"><span>🍱</span>Anna Prasadam</div>' +
+      '<div class="gallery-placeholder"><span>🌳</span>Vruksha Seva</div>' +
+      '<div class="gallery-placeholder"><span>🎓</span>Scholarships</div>' +
+      '<div class="gallery-placeholder"><span>💧</span>Jala Prasadam</div>' +
+      '<div class="gallery-placeholder"><span>🕉</span>Spiritual Events</div>';
+    return;
+  }
+  grid.innerHTML = '';
+  galleryImages.forEach(function(img, i) {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.innerHTML = '<img src="' + img.src + '" alt="Gallery ' + (i+1) + '" loading="lazy"><div class="gallery-overlay">🔍</div>';
+    grid.appendChild(item);
+  });
+}
+
+// ── TESTIMONIALS RENDER ──
+function renderTestimonials() {
+  const grid = document.getElementById('testiGrid');
+  grid.innerHTML = '';
+  if (testimonials.length === 0) {
+    grid.innerHTML = '<p style="color:var(--muted);text-align:center;grid-column:1/-1;">No testimonials yet.</p>';
+    return;
+  }
+  testimonials.forEach(function(t) {
+    const card = document.createElement('div');
+    card.className = 'testi-card';
+    card.innerHTML = '<p>' + t.msg + '</p><div class="author">' + t.name + '</div><div class="author-loc">' + (t.loc || '') + '</div>';
+    grid.appendChild(card);
+  });
+}
+
+// ── ADMIN THUMB LISTS ──
+function renderBannerThumbs() {
+  const list = document.getElementById('bannerThumbList');
+  if (!list) return;
+  if (bannerImages.length === 0) { list.innerHTML = '<div class="empty-banner-msg">No images added yet.</div>'; return; }
+  list.innerHTML = '';
+  bannerImages.forEach(function(img) {
+    const row = document.createElement('div');
+    row.className = 'banner-thumb';
+    const label = img.src.startsWith('data:') ? 'Uploaded image' : (img.src.length > 55 ? img.src.slice(0,52)+'...' : img.src);
+    row.innerHTML = '<img src="' + img.src + '" onerror="this.style.opacity=0.3"><div class="bth-url">' + label + '</div><button class="bth-del" onclick="window.removeBannerImage(\'' + img.id + '\')">Remove</button>';
+    list.appendChild(row);
+  });
+}
+
+function renderGalleryThumbList() {
+  const list = document.getElementById('galleryThumbList');
+  if (!list) return;
+  if (galleryImages.length === 0) { list.innerHTML = '<div class="empty-banner-msg">No images added yet.</div>'; return; }
+  list.innerHTML = '';
+  galleryImages.forEach(function(img) {
+    const row = document.createElement('div');
+    row.className = 'banner-thumb';
+    const label = img.src.startsWith('data:') ? 'Uploaded image' : (img.src.length > 55 ? img.src.slice(0,52)+'...' : img.src);
+    row.innerHTML = '<img src="' + img.src + '" onerror="this.style.opacity=0.3"><div class="bth-url">' + label + '</div><button class="bth-del" onclick="window.removeGalleryImage(\'' + img.id + '\')">Remove</button>';
+    list.appendChild(row);
+  });
+}
+
+function renderTestiAdminList() {
+  const list = document.getElementById('testiAdminList');
+  if (!list) return;
+  if (testimonials.length === 0) { list.innerHTML = '<div class="empty-banner-msg">No testimonials yet. Add one above.</div>'; return; }
+  list.innerHTML = '';
+  testimonials.forEach(function(t) {
+    const row = document.createElement('div');
+    row.className = 'testi-admin-item';
+    const preview = t.msg.length > 90 ? t.msg.slice(0,90) + '...' : t.msg;
+    row.innerHTML = '<div class="tai-text"><div class="tai-quote">"' + preview + '"</div><div class="tai-author">— ' + t.name + (t.loc ? ', ' + t.loc : '') + '</div></div><button class="bth-del" onclick="window.removeTestimonial(\'' + t.id + '\')">Remove</button>';
+    list.appendChild(row);
+  });
+}
+
+// ── AUTH ──
+const ADMIN_USER = 'knradmin';
+const ADMIN_PASS = 'knr@2025';
+
+function openLoginModal() {
+  document.getElementById('loginModal').classList.add('open');
+  setTimeout(function() { document.getElementById('loginUser').focus(); }, 100);
+}
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('open');
+  document.getElementById('loginError').classList.remove('show');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    closeLoginModal();
+    openAdminPanel();
+  } else {
+    document.getElementById('loginError').classList.add('show');
+  }
+}
+function logout() { closeAdminPanel(); }
+
+// ── ADMIN PANEL ──
+function openAdminPanel() {
+  document.getElementById('adminPanelModal').classList.add('open');
+  document.getElementById('admin-panel').classList.add('open');
+  renderBannerThumbs();
+  renderGalleryThumbList();
+  renderTestiAdminList();
+  loadMessages();
+}
+function closeAdminPanel() {
+  document.getElementById('adminPanelModal').classList.remove('open');
+  document.getElementById('admin-panel').classList.remove('open');
+}
+function switchTab(tab, btn) {
+  document.querySelectorAll('.admin-tab-content').forEach(function(el) { el.style.display = 'none'; });
+  document.querySelectorAll('.admin-tab').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).style.display = 'block';
+  btn.classList.add('active');
+}
+
+// ── DRAG & DROP ──
+['uploadZone', 'galleryUploadZone'].forEach(function(zoneId) {
+  const zone   = document.getElementById(zoneId);
+  const target = zoneId === 'uploadZone' ? 'banner' : 'gallery';
+  zone.addEventListener('dragover',  function(e) { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', function()  { zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    Array.from(e.dataTransfer.files).filter(function(f) { return f.type.startsWith('image/'); }).forEach(function(file) {
+      if (target === 'banner') saveBannerImage(file);
+      else saveGalleryImage(file);
+    });
+  });
+});
+
+// ── MODAL OVERLAY CLOSE ──
+document.getElementById('loginModal').addEventListener('click', function(e) {
+  if (e.target === this) closeLoginModal();
+});
+document.getElementById('adminPanelModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAdminPanel();
+});
+
+// ── EXPOSE TO GLOBAL WINDOW (required for onclick= in HTML with ES modules) ──
+window.openLoginModal    = openLoginModal;
+window.closeLoginModal   = closeLoginModal;
+window.doLogin           = doLogin;
+window.logout            = logout;
+window.openAdminPanel    = openAdminPanel;
+window.closeAdminPanel   = closeAdminPanel;
+window.switchTab         = switchTab;
+window.handleFileUpload  = handleFileUpload;
+window.addImageByUrl     = addImageByUrl;
+window.removeBannerImage = removeBannerImage;
+window.removeGalleryImage= removeGalleryImage;
+window.removeTestimonial = removeTestimonial;
+window.addTestimonial    = addTestimonial;
+window.nextSlide         = nextSlide;
+window.prevSlide         = prevSlide;
+window.goToSlide         = goToSlide;
+window.sendMessage = sendMessage;
+
+// ── INIT ──
+startListeners();
+renderSlider();
+resetAutoSlide();
+</script>
+<!-- Email assembled at runtime to prevent bot harvesting -->
+<script>
+(function(){
+  var el = document.getElementById('knrEmail');
+  if (el) {
+    var u = 'knrcharity', d = 'gmail', t = 'com';
+    var addr = u + '@' + d + '.' + t;
+    el.innerHTML = '<a href="' + ['mai','lto:'].join('') + addr + '" style="color:var(--saffron)">' + addr + '</a>';
+  }
+})();
+</script>
+</body>
+</html>
