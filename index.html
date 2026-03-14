@@ -394,46 +394,105 @@
   /* ── GALLERY ── */
   #gallery { background: var(--off-white); }
 
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 12px;
+  .gallery-carousel-wrap {
+    position: relative;
+    padding: 0 56px;
   }
 
+  .gallery-carousel {
+    display: flex;
+    overflow: hidden;
+    gap: 12px;
+    scroll-behavior: smooth;
+  }
+
+  /* Each item is 1/4 of container width on desktop */
   .gallery-item {
+    flex: 0 0 calc(25% - 9px);
     aspect-ratio: 1;
     background: var(--border);
-    border-radius: 3px;
+    border-radius: 6px;
     overflow: hidden;
     position: relative;
     cursor: pointer;
+    transition: transform 0.3s;
   }
   .gallery-item img {
     width: 100%; height: 100%;
     object-fit: cover;
     transition: transform 0.4s;
+    display: block;
   }
+  .gallery-item:hover { transform: translateY(-3px); }
   .gallery-item:hover img { transform: scale(1.08); }
   .gallery-item .gallery-overlay {
     position: absolute; inset: 0;
-    background: rgba(28,16,8,0.5);
+    background: rgba(5,13,26,0.5);
     opacity: 0; display: flex; align-items: center; justify-content: center;
     transition: opacity 0.3s; color: #fff; font-size: 1.6rem;
   }
   .gallery-item:hover .gallery-overlay { opacity: 1; }
 
   .gallery-placeholder {
+    flex: 0 0 calc(25% - 9px);
     aspect-ratio: 1;
     background: linear-gradient(135deg, var(--border), var(--cream));
-    border-radius: 3px;
+    border-radius: 6px;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     color: var(--muted); font-size: 0.95rem; gap: 8px;
   }
   .gallery-placeholder span { font-size: 2rem; }
 
+  /* Arrow buttons */
+  .gallery-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(5,13,26,0.75);
+    border: 1px solid rgba(144,202,249,0.4);
+    color: var(--gold-light);
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.25s;
+    backdrop-filter: blur(4px);
+  }
+  .gallery-arrow:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #fff;
+    transform: translateY(-50%) scale(1.08);
+  }
+  .gallery-arrow.disabled {
+    opacity: 0.25;
+    cursor: default;
+    pointer-events: none;
+  }
+  .gallery-arrow.g-prev { left: 4px; }
+  .gallery-arrow.g-next { right: 4px; }
+
+  /* Dot indicators */
+  .gallery-dots {
+    display: flex; justify-content: center;
+    gap: 7px; margin-top: 18px;
+  }
+  .gallery-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    border: none; cursor: pointer;
+    padding: 0;
+    transition: all 0.25s;
+  }
+  .gallery-dot.active {
+    background: var(--gold);
+    transform: scale(1.3);
+  }
+
   .gallery-note {
-    text-align: center; margin-top: 24px;
+    text-align: center; margin-top: 20px;
     color: var(--muted); font-size: 1rem;
   }
 
@@ -883,8 +942,14 @@
     /* Objectives / Activities */
     .obj-grid, .activities-grid { grid-template-columns: 1fr; gap: 16px; }
 
-    /* Gallery */
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    /* Gallery carousel — 1 item on mobile */
+    .gallery-item,
+    .gallery-placeholder {
+      flex: 0 0 calc(100% - 0px) !important;
+    }
+    .gallery-carousel-wrap { padding: 0 44px; }
+    .gallery-arrow.g-prev { left: 2px; }
+    .gallery-arrow.g-next { right: 2px; }
 
     /* Testimonials */
     .testi-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -919,7 +984,6 @@
 
   @media (max-width: 420px) {
     .slide-content h1 { font-size: 1.45rem; }
-    .gallery-grid { grid-template-columns: 1fr; }
     .section-title { font-size: 1.6rem; }
     .admin-tab { padding: 7px 8px; font-size: 0.72rem; letter-spacing: 0; }
   }
@@ -1334,16 +1398,21 @@
     <div class="section-label">Our Moments</div>
     <h2 class="section-title">Gallery</h2>
     <div class="divider"></div>
-    <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-placeholder"><span>🛕</span>Hanuman Temple</div>
-      <div class="gallery-placeholder"><span>🐄</span>Gou Shala</div>
-      <div class="gallery-placeholder"><span>📚</span>Knowledge Center</div>
-      <div class="gallery-placeholder"><span>🍱</span>Anna Prasadam</div>
-      <div class="gallery-placeholder"><span>🌳</span>Vruksha Seva</div>
-      <div class="gallery-placeholder"><span>🎓</span>Scholarships</div>
-      <div class="gallery-placeholder"><span>💧</span>Jala Prasadam</div>
-      <div class="gallery-placeholder"><span>🕉</span>Spiritual Events</div>
+    <div class="gallery-carousel-wrap">
+      <button class="gallery-arrow g-prev" id="galleryPrev" onclick="galleryScroll(-1)" aria-label="Previous">&#8249;</button>
+      <div class="gallery-carousel" id="galleryGrid">
+        <div class="gallery-placeholder"><span>🛕</span>Hanuman Temple</div>
+        <div class="gallery-placeholder"><span>🐄</span>Gou Shala</div>
+        <div class="gallery-placeholder"><span>📚</span>Knowledge Center</div>
+        <div class="gallery-placeholder"><span>🍱</span>Anna Prasadam</div>
+        <div class="gallery-placeholder"><span>🌳</span>Vruksha Seva</div>
+        <div class="gallery-placeholder"><span>🎓</span>Scholarships</div>
+        <div class="gallery-placeholder"><span>💧</span>Jala Prasadam</div>
+        <div class="gallery-placeholder"><span>🕉</span>Spiritual Events</div>
+      </div>
+      <button class="gallery-arrow g-next" id="galleryNext" onclick="galleryScroll(1)" aria-label="Next">&#8250;</button>
     </div>
+    <div class="gallery-dots" id="galleryDots"></div>
     <p class="gallery-note">Admin can upload event photos via the Admin panel. Photos will appear here automatically.</p>
   </div>
 </section>
@@ -1922,29 +1991,100 @@ function resetAutoSlide() {
   autoSlideTimer = setInterval(function() { nextSlide(); }, 5000);
 }
 
-// ── GALLERY RENDER ──
+// ── GALLERY CAROUSEL ──
+var galleryPage = 0;
+
+function galleryItemsPerPage() {
+  return window.innerWidth <= 768 ? 1 : 4;
+}
+
 function renderGallery() {
   const grid = document.getElementById('galleryGrid');
-  if (galleryImages.length === 0) {
-    grid.innerHTML =
-      '<div class="gallery-placeholder"><span>🛕</span>Hanuman Temple</div>' +
-      '<div class="gallery-placeholder"><span>🐄</span>Gou Shala</div>' +
-      '<div class="gallery-placeholder"><span>📚</span>Knowledge Center</div>' +
-      '<div class="gallery-placeholder"><span>🍱</span>Anna Prasadam</div>' +
-      '<div class="gallery-placeholder"><span>🌳</span>Vruksha Seva</div>' +
-      '<div class="gallery-placeholder"><span>🎓</span>Scholarships</div>' +
-      '<div class="gallery-placeholder"><span>💧</span>Jala Prasadam</div>' +
-      '<div class="gallery-placeholder"><span>🕉</span>Spiritual Events</div>';
-    return;
-  }
+  const dotsEl = document.getElementById('galleryDots');
+  if (!grid) return;
+
+  const placeholders = [
+    ['🛕', 'Hanuman Temple'], ['🐄', 'Gou Shala'],
+    ['📚', 'Knowledge Center'], ['🍱', 'Anna Prasadam'],
+    ['🌳', 'Vruksha Seva'], ['🎓', 'Scholarships'],
+    ['💧', 'Jala Prasadam'], ['🕉', 'Spiritual Events']
+  ];
+
   grid.innerHTML = '';
-  galleryImages.forEach(function(img, i) {
-    const item = document.createElement('div');
-    item.className = 'gallery-item';
-    item.innerHTML = '<img src="' + img.src + '" alt="Gallery ' + (i+1) + '" loading="lazy"><div class="gallery-overlay">🔍</div>';
-    grid.appendChild(item);
-  });
+  const items = galleryImages.length > 0 ? galleryImages : null;
+  const count = items ? items.length : placeholders.length;
+
+  if (items) {
+    items.forEach(function(img, i) {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.innerHTML = '<img src="' + img.src + '" alt="Gallery ' + (i+1) + '" loading="lazy"><div class="gallery-overlay">🔍</div>';
+      grid.appendChild(item);
+    });
+  } else {
+    placeholders.forEach(function(p) {
+      const item = document.createElement('div');
+      item.className = 'gallery-placeholder';
+      item.innerHTML = '<span>' + p[0] + '</span>' + p[1];
+      grid.appendChild(item);
+    });
+  }
+
+  galleryPage = 0;
+  updateGalleryCarousel();
 }
+
+function updateGalleryCarousel() {
+  const grid = document.getElementById('galleryGrid');
+  const dotsEl = document.getElementById('galleryDots');
+  const prevBtn = document.getElementById('galleryPrev');
+  const nextBtn = document.getElementById('galleryNext');
+  if (!grid) return;
+
+  const perPage = galleryItemsPerPage();
+  const items = grid.children;
+  const total = items.length;
+  const totalPages = Math.ceil(total / perPage);
+  galleryPage = Math.max(0, Math.min(galleryPage, totalPages - 1));
+
+  // Scroll carousel to the right position
+  const itemW = items[0] ? items[0].offsetWidth + 12 : 0;
+  grid.scrollLeft = galleryPage * perPage * itemW;
+
+  // Update dots
+  if (dotsEl) {
+    dotsEl.innerHTML = '';
+    for (var i = 0; i < totalPages; i++) {
+      var dot = document.createElement('button');
+      dot.className = 'gallery-dot' + (i === galleryPage ? ' active' : '');
+      dot.setAttribute('aria-label', 'Page ' + (i+1));
+      (function(idx) {
+        dot.onclick = function() { galleryPage = idx; updateGalleryCarousel(); };
+      })(i);
+      dotsEl.appendChild(dot);
+    }
+  }
+
+  // Update arrow states
+  if (prevBtn) prevBtn.classList.toggle('disabled', galleryPage === 0);
+  if (nextBtn) nextBtn.classList.toggle('disabled', galleryPage >= totalPages - 1);
+}
+
+function galleryScroll(dir) {
+  const perPage = galleryItemsPerPage();
+  const grid = document.getElementById('galleryGrid');
+  if (!grid) return;
+  const total = grid.children.length;
+  const totalPages = Math.ceil(total / perPage);
+  galleryPage = Math.max(0, Math.min(galleryPage + dir, totalPages - 1));
+  updateGalleryCarousel();
+}
+
+// Re-calc on resize
+window.addEventListener('resize', function() {
+  galleryPage = 0;
+  updateGalleryCarousel();
+});
 
 // ── TESTIMONIALS RENDER ──
 function renderTestimonials() {
@@ -2093,6 +2233,7 @@ window.nextSlide         = nextSlide;
 window.prevSlide         = prevSlide;
 window.goToSlide         = goToSlide;
 window.sendMessage       = sendMessage;
+window.galleryScroll     = galleryScroll;
 window.markReplied       = markReplied;
 window.deleteMessage     = deleteMessage;
 
@@ -2101,6 +2242,7 @@ startListeners();
 loadMessages();
 renderSlider();
 resetAutoSlide();
+updateGalleryCarousel();
 </script>
 <!-- Email assembled at runtime to prevent bot harvesting -->
 <script>
