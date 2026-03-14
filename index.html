@@ -32,24 +32,31 @@
   }
 
   .whatsapp-float{
-    position:fixed;
-    width:60px;
-    height:60px;
-    bottom:20px;
-    right:20px;
-    background-color:#25D366;
-    color:#FFF;
-    border-radius:50px;
-    text-align:center;
-    font-size:30px;
-    line-height:60px;
-    box-shadow:2px 2px 10px rgba(0,0,0,0.3);
-    z-index:100;
-    text-decoration:none;
+    position: fixed;
+    width: 58px;
+    height: 58px;
+    bottom: 24px;
+    right: 24px;
+    background-color: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    z-index: 9500;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.2s;
   }
 
   .whatsapp-float:hover{
-    background-color:#1ebe5d;
+    background-color: #1ebe5d;
+    transform: scale(1.08);
+  }
+
+  .whatsapp-float img {
+    width: 32px;
+    height: 32px;
+    display: block;
   }
 
   /* ── NAV ── */
@@ -680,64 +687,82 @@
   .testi-admin-item .tai-author { color: var(--gold-light); font-size: 0.78rem; font-weight: 600; }
 
   .messages-list{
-    margin-top:15px;
-    display:flex;
-    flex-direction:column;
-    gap:14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .message-card{
-    background:white;
-    border:1px solid var(--border);
-    padding:16px;
-    border-radius:8px;
-    display:flex;
-    flex-direction:column;
-    gap:6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(25,118,210,0.2);
+    padding: 16px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .message-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .message-header strong { color: #fff; font-size: 0.95rem; }
+  .message-header small  { color: rgba(255,255,255,0.45); font-size: 0.82rem; }
+
+  .message-card > p {
+    color: rgba(255,255,255,0.72);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    border-left: 3px solid rgba(25,118,210,0.4);
+    padding-left: 10px;
+    margin: 0;
   }
 
   .message-actions{
-    margin-top:8px;
-    display:flex;
-    gap:8px;
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
   }
 
   .message-actions button{
-    padding:6px 10px;
-    border:none;
-    border-radius:4px;
-    cursor:pointer;
+    padding: 5px 14px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s;
   }
+  .message-actions button:hover { opacity: 0.8; }
 
-  .btn-delete{
-    background:#ff5252;
-    color:white;
-  }
-
-  .btn-replied{
-    background:#2e7d32;
-    color:white;
-  }
+  .btn-delete  { background: #b71c1c; color: #fff; }
+  .btn-replied { background: var(--gold); color: #fff; }
 
   .status-badge{
-    padding:4px 8px;
-    border-radius:4px;
-    font-size:12px;
-    color:white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.73rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
-  .status-new{
-    background:#ff9800;
+  .status-new {
+    background: rgba(245,124,0,0.18);
+    color: #ffb74d;
+    border: 1px solid rgba(245,124,0,0.35);
   }
 
-  .status-replied{
-    background:#4caf50;
+  .status-replied {
+    background: rgba(25,118,210,0.18);
+    color: var(--gold-light);
+    border: 1px solid rgba(25,118,210,0.35);
   }
 
   /* ── RESPONSIVE ── */
@@ -1350,7 +1375,7 @@
 </section>
 
 <!-- Whatsapp -->
-<a href="https://wa.me/919989811135?text=Hello%20I%20would%20like%20to%20know%20more%20about%20KNR%20Charitable%20Trust"
+<a href="https://wa.me/916309090909?text=Hello%20I%20would%20like%20to%20know%20more%20about%20KNR%20Charitable%20Trust"
    class="whatsapp-float"
    target="_blank">
    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="35">
@@ -1386,6 +1411,7 @@
       <button class="admin-tab active" onclick="switchTab('banner',this)">🖼 Banner</button>
       <button class="admin-tab" onclick="switchTab('gallery',this)">📷 Gallery</button>
       <button class="admin-tab" onclick="switchTab('testimonials',this)">💬 Testimonials</button>
+      <button class="admin-tab" onclick="switchTab('messages',this)">📩 Messages</button>
     </div>
 
     <!-- ── TAB: BANNER ── -->
@@ -1438,12 +1464,10 @@
       </div>
     </div>
 
-    <!-- CONTACT MESSAGES -->
-    <div class="admin-section">
-      <h3>Contact Messages</h3>
-
+    <!-- ── TAB: MESSAGES ── -->
+    <div class="admin-tab-content" id="tab-messages" style="display:none;">
       <div id="messagesList" class="messages-list">
-        <p>Loading messages...</p>
+        <p class="empty-banner-msg">Loading messages…</p>
       </div>
     </div>
 
@@ -2045,10 +2069,13 @@ window.addTestimonial    = addTestimonial;
 window.nextSlide         = nextSlide;
 window.prevSlide         = prevSlide;
 window.goToSlide         = goToSlide;
-window.sendMessage = sendMessage;
+window.sendMessage       = sendMessage;
+window.markReplied       = markReplied;
+window.deleteMessage     = deleteMessage;
 
 // ── INIT ──
 startListeners();
+loadMessages();
 renderSlider();
 resetAutoSlide();
 </script>
