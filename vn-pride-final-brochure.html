@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>V N Pride - Digital Brochure</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary: #1a5f3f;
+    --primary-light: #2d8659;
+    --accent: #d4af37;
+    --dark: #1a1a1a;
+    --text: #2c2c2c;
+    --text-light: #666;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+    background: white;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+  }
+
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      page-break-after: always;
+      page-break-inside: avoid;
+      margin: 0;
+      height: 297mm;
+      max-height: 297mm;
+      overflow: hidden;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    .no-break {
+      page-break-inside: avoid;
+    }
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    max-height: 297mm;
+    margin: 0 auto;
+    background: white;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  @media screen {
+    .page {
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+  }
+
+  .cover-page {
+    background: linear-gradient(135deg, #0f3d27 0%, #1a5f3f 50%, #2d8659 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 50px 40px;
+  }
+
+  .cover-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(212,175,55,0.2), transparent 40%);
+  }
+
+  .cover-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-badge {
+    background: rgba(212,175,55,0.3);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    padding: 10px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 35px;
+    display: inline-block;
+  }
+
+  .cover-title {
+    font-size: 84px;
+    margin-bottom: 25px;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .cover-subtitle {
+    font-size: 28px;
+    margin-bottom: 18px;
+    font-weight: 300;
+  }
+
+  .cover-location {
+    font-size: 18px;
+    color: #f4d77d;
+    margin-bottom: 55px;
+  }
+
+  .cover-stats {
+    display: flex;
+    gap: 70px;
+    justify-content: center;
+    margin-bottom: 45px;
+  }
+
+  .stat-number {
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .stat-label {
+    font-size: 16px;
+    color: rgba(255,255,255,0.9);
+    margin-top: 10px;
+  }
+
+  .content-page {
+    padding: 40px 45px 35px 45px;
+    height: 297mm;
+    max-height: 297mm;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--primary);
+  }
+
+  .page-badge {
+    background: var(--primary);
+    color: white;
+    padding: 9px 25px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  .page-title {
+    font-size: 46px;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+
+  .page-subtitle {
+    font-size: 18px;
+    color: var(--text-light);
+  }
+
+  .intro-text {
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+    text-align: center;
+    color: var(--text);
+  }
+
+
+  .detail-box {
+    background: linear-gradient(135deg, #f8f9fa, white);
+    border-left: 5px solid var(--primary);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+
+  .detail-box h3 {
+    font-size: 18px;
+    color: var(--primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .detail-box p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .icon {
+    font-size: 22px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .category-header {
+    font-size: 15px;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-top: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .category-header:first-child {
+    margin-top: 0;
+  }
+
+  .highlight-section {
+    background: linear-gradient(135deg, var(--primary) 0%, #0f3d27 100%);
+    color: white;
+    padding: 40px 45px 35px 45px;
+  }
+
+  .highlight-section .page-badge {
+    background: var(--accent);
+    color: var(--dark);
+  }
+
+  .highlight-section .page-title,
+  .highlight-section .page-subtitle {
+    color: white;
+  }
+
+  .highlight-section .page-header {
+    border-bottom-color: var(--accent);
+  }
+
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 24px;
+    margin-bottom: 22px;
+  }
+
+  .highlight-item {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 12px;
+    padding: 18px 15px;
+    text-align: center;
+  }
+
+  .highlight-icon {
+    font-size: 36px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .highlight-text {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .page-footer {
+    text-align: center;
+    padding-top: 18px;
+    margin-top: auto;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    font-size: 15px;
+    color: var(--text-light);
+    position: absolute;
+    bottom: 28px;
+    left: 45px;
+    right: 45px;
+  }
+
+  .highlight-section .page-footer {
+    border-top-color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+  }
+
+  @media print {
+    .page-footer {
+      position: absolute;
+      bottom: 28px;
+      left: 45px;
+      right: 45px;
+      margin-top: 0;
+    }
+  }
+
+  .highlight-section .page-footer {
+    border-top-color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7);
+  }
+
+  .print-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(26,95,63,0.3);
+    z-index: 1000;
+    font-size: 16px;
+  }
+
+  .print-button:hover {
+    background: var(--primary-light);
+  }
+
+  @media print {
+    .print-button {
+      display: none;
+    }
+  }
+
+  .special-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+  }
+
+  .special-card {
+    background: linear-gradient(135deg, #f8f9fa, white);
+    border: 2px solid var(--primary-light);
+    border-radius: 16px;
+    padding: 28px 22px;
+    text-align: center;
+  }
+
+  .special-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1rem;
+    color: white;
+  }
+
+  .special-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary);
+  }
+
+  .special-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<button class="print-button" onclick="window.print()">📄 Save as PDF</button>
+
+<!-- Page 1: Cover -->
+<div class="page cover-page">
+  <div class="cover-content">
+    <div class="cover-badge">DTCP APPROVED GATED COMMUNITY</div>
+    <h1 class="cover-title">V N Pride</h1>
+    <p class="cover-subtitle">Premium Integrated Township</p>
+    <p class="cover-location">📍 Highway No 716, Rajampet - Tirupathi Road<br>10 minutes from Rajampet</p>
+
+    <div class="cover-stats">
+      <div class="stat">
+        <span class="stat-number">25</span>
+        <span class="stat-label">Acres Township</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">22</span>
+        <span class="stat-label">Acres DTCP Approved</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">1st</span>
+        <span class="stat-label">DTCP Approved in Area</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page 2: What & Where -->
+<div class="page content-page">
+  <div class="page-header" style="margin-bottom: 20px;">
+    <div class="page-badge" style="padding: 7px 20px; font-size: 11px; margin-bottom: 12px;">ABOUT V N PRIDE</div>
+    <h2 class="page-title" style="font-size: 40px; margin-bottom: 10px;">What is V N Pride?</h2>
+    <p class="page-subtitle" style="font-size: 16px;">ఏమిటి ఈ వి యన్ ప్రైడ్?</p>
+  </div>
+
+  <p class="intro-text" style="font-size: 16px; line-height: 1.65; margin-bottom: 20px;">
+    V N Pride is a massive DTCP-approved Integrated Gated Community Township spanning 25 acres of land.
+    In its first phase, 22 acres are DTCP approved and divided into 231 thoughtfully planned house plots.
+    All required tests for building construction, including Soil Test and Water Test, were completed before applying for DTCP approval,
+    which has now been finalized.
+  </p>
+
+  <h3 style="font-size: 30px; color: var(--primary); margin: 20px 0 14px 0; text-align: center;">
+    Where is V N Pride?<br>
+    <span style="font-size: 17px; color: var(--text-light); font-weight: 400;">ఈ వి యన్ ప్రైడ్ ఎక్కడ ఉంది?</span>
+  </h3>
+
+  <p class="intro-text" style="font-size: 16px; line-height: 1.65; margin-bottom: 20px;">
+    V N Pride is strategically located on <strong>Highway No 716, Rajampet - Tirupathi Road</strong>,
+    just <strong>60 minutes from Temple City Tirupathi</strong> and <strong>10 minutes from Rajampet</strong>.
+  </p>
+
+  <h3 style="font-size: 30px; color: var(--primary); margin: 20px 0 14px 0; text-align: center;">
+    How is it Special?<br>
+    <span style="font-size: 17px; color: var(--text-light); font-weight: 400;">ఇది ఎందుకు ప్రత్యేకం?</span>
+  </h3>
+
+  <div class="special-grid" style="gap: 16px; margin-top: 18px;">
+    <div class="special-card no-break" style="padding: 20px 16px;">
+      <div class="special-icon" style="width: 56px; height: 56px; font-size: 1.75rem; margin-bottom: 0.75rem;">🏛️</div>
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.6rem;">First DTCP Approved</h3>
+      <p style="font-size: 0.92rem; line-height: 1.5;">First DTCP approved layout in our area, ensuring legal compliance and peace of mind</p>
+    </div>
+
+    <div class="special-card no-break" style="padding: 20px 16px;">
+      <div class="special-icon" style="width: 56px; height: 56px; font-size: 1.75rem; margin-bottom: 0.75rem;">🏘️</div>
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.6rem;">Many Amenities</h3>
+      <p style="font-size: 0.92rem; line-height: 1.5;">Complete township with all modern amenities and facilities within the premises</p>
+    </div>
+
+    <div class="special-card no-break" style="padding: 20px 16px;">
+      <div class="special-icon" style="width: 56px; height: 56px; font-size: 1.75rem; margin-bottom: 0.75rem;">🏗️</div>
+      <h3 style="font-size: 1.15rem; margin-bottom: 0.6rem;">Ready to Occupy</h3>
+      <p style="font-size: 0.92rem; line-height: 1.5;">Houses & Villas being constructed on order. Some are about to occupy the place</p>
+    </div>
+  </div>
+
+  <div class="page-footer">V N Pride - Premium Integrated Township | Page 1</div>
+</div>
+
+<!-- Page 3: Special Features - Foodz Corner -->
+<div class="page content-page">
+  <div class="page-header">
+    <div class="page-badge">AMENITIES</div>
+    <h2 class="page-title">Special Features in V N Pride</h2>
+    <p class="page-subtitle">వి యన్ ప్రైడ్ లో ముఖ్యమైన అంశాలు</p>
+  </div>
+
+  <div>
+    <div class="category-header">🍽️ FOODZ CORNER (అన్నపూర్ణ భోజనాలయం)</div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🍳</span> Community Kitchen</h3>
+      <p>Three meals daily (breakfast, lunch, dinner) with monthly billing. Both vegetarian and non-vegetarian options with separate kitchens using SS 304 grade equipment. Dining hall accommodates 100 members.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🛒</span> Super Market</h3>
+      <p>Convenient on-site shopping for daily essentials, groceries, and household items within the township premises.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🥛</span> Milk & Meat Shop</h3>
+      <p>Fresh daily milk supply and quality meat products available for residents.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🥬</span> Organic Vegetables</h3>
+      <p>Farm-fresh organic vegetables grown without harmful pesticides, ensuring healthy eating for all residents.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">V N Pride - Premium Integrated Township | Page 2</div>
+</div>
+
+<!-- Page 4: Special Features - Health Club -->
+<div class="page content-page">
+  <div class="page-header">
+    <div class="page-badge">AMENITIES</div>
+    <h2 class="page-title">Special Features in V N Pride</h2>
+    <p class="page-subtitle">వి యన్ ప్రైడ్ లో ముఖ్యమైన అంశాలు (continued)</p>
+  </div>
+
+  <div>
+    <div class="category-header">💪 HEALTH CLUB (ధన్వంతరి ఆరోగ్య కేంద్రం)</div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🏊</span> Indoor Swimming Pool</h3>
+      <p>Dome-covered pool providing privacy protection from drones and unauthorized photography. Dedicated timetable maintained for women's exclusive use.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">💪</span> Outdoor Gymnasium</h3>
+      <p>More than 10 outdoor exercise stations in the central park suitable for both youth and elderly members.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🦶</span> Parks & Walking Tracks</h3>
+      <p>10-foot-wide clay walking path (250 meters) around central park. Walking barefoot provides health benefits during morning and evening hours.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🧘</span> Meditation Centre</h3>
+      <p>Yoga and meditation center designed to accommodate 100 people under expert yoga guru guidance. Beneficial for all age groups.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🚑</span> Clinic & Ambulance</h3>
+      <p>On-site clinic facilities. Dedicated Maruti Eeco ambulance equipped with oxygen cylinder for emergency medical transport.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">V N Pride - Premium Integrated Township | Page 3</div>
+</div>
+
+<!-- Page 5: Special Features - Games Zone Part 1 -->
+<div class="page content-page">
+  <div class="page-header">
+    <div class="page-badge">AMENITIES</div>
+    <h2 class="page-title">Special Features in V N Pride</h2>
+    <p class="page-subtitle">వి యన్ ప్రైడ్ లో ముఖ్యమైన అంశాలు (continued)</p>
+  </div>
+
+  <div>
+    <div class="category-header">🎾 GAMES ZONE (ఆటల స్థలం)</div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">⛸️</span> Skating Rink</h3>
+      <p>International standard rink for 30 people with smooth surface using special finishing.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🎾</span> Tennis Court</h3>
+      <p>Standard 78-foot court with clay/grass surface for professional play.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🏏</span> Box Cricket</h3>
+      <p>60'x100' all-weather area with grass surface, UV-resistant netting, and LED floodlights.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🏸</span> Badminton Courts</h3>
+      <p>Two exclusive courts with proper flooring for singles and doubles matches.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">V N Pride - Premium Integrated Township | Page 4</div>
+</div>
+
+<!-- Page 6: Special Features - Games Zone Part 2 -->
+<div class="page content-page">
+  <div class="page-header">
+    <div class="page-badge">AMENITIES</div>
+    <h2 class="page-title">Special Features in V N Pride</h2>
+    <p class="page-subtitle">వి యన్ ప్రైడ్ లో ముఖ్యమైన అంశాలు (continued)</p>
+  </div>
+
+  <div>
+    <div class="category-header">🎾 GAMES ZONE (continued)</div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🏐</span> Volleyball Court</h3>
+      <p>Standard court where teams of six players compete separated by a net.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🏀</span> Half Basketball Court</h3>
+      <p>47x50 feet court with one hoop, free-throw lane, and three-point arc for 3-on-3 games.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🎯</span> Indoor Games</h3>
+      <p>Chess, Ludo, Table Tennis, and Carrom for entertainment regardless of weather.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">V N Pride - Premium Integrated Township | Page 5</div>
+</div>
+
+<!-- Page 7: Special Features - Extra Features -->
+<div class="page content-page">
+  <div class="page-header">
+    <div class="page-badge">AMENITIES</div>
+    <h2 class="page-title">Special Features in V N Pride</h2>
+    <p class="page-subtitle">వి యన్ ప్రైడ్ లో ముఖ్యమైన అంశాలు (continued)</p>
+  </div>
+
+  <div>
+    <div class="category-header">⭐ EXTRA FEATURES (ప్రత్యేకాంశాలు)</div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🚁</span> Helipad</h3>
+      <p>Dedicated helipad for emergency heli-ambulance services. Doubles as skating rink when not in use.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🔌</span> Electric Charging Point</h3>
+      <p>Two-terminal EV charging station near entrance gate. Operates as unmanned, kiosk-based system.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🚨</span> Panic Button System</h3>
+      <p>Emergency alert system throughout the township. Immediately notifies emergency response team.</p>
+    </div>
+
+    <div class="detail-box no-break">
+      <h3><span class="icon">🐄</span> Gou Shala</h3>
+      <p>Sacred cow protection facility promoting traditional Indian values and culture.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">V N Pride - Premium Integrated Township | Page 6</div>
+</div>
+
+<!-- Page 8: Venture Highlights -->
+<div class="page highlight-section">
+  <div class="page-header" style="margin-bottom: 18px;">
+    <div class="page-badge" style="padding: 7px 20px; font-size: 11px; margin-bottom: 12px;">INFRASTRUCTURE</div>
+    <h2 class="page-title" style="font-size: 40px; margin-bottom: 10px;">Venture Highlights</h2>
+    <p class="page-subtitle" style="font-size: 16px;">ప్రధాన విశేషాలు - Premium infrastructure for modern living</p>
+  </div>
+
+  <div class="highlights-grid" style="gap: 12px; margin-top: 18px; margin-bottom: 16px;">
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">✓</span>
+      <div class="highlight-text" style="font-size: 13px;">DTCP Approved</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🛣️</span>
+      <div class="highlight-text" style="font-size: 13px;">40 Feet Wide Streets</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">⚡</span>
+      <div class="highlight-text" style="font-size: 13px;">Underground Electricity</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🚰</span>
+      <div class="highlight-text" style="font-size: 13px;">Underground Drainage</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🏗️</span>
+      <div class="highlight-text" style="font-size: 13px;">M20 Std Cement Roads</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">💧</span>
+      <div class="highlight-text" style="font-size: 13px;">120K OH Water Tank</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🚶</span>
+      <div class="highlight-text" style="font-size: 13px;">5 Km Footpath</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">💦</span>
+      <div class="highlight-text" style="font-size: 13px;">24x7 Water Supply</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🎪</span>
+      <div class="highlight-text" style="font-size: 13px;">Mini Function Hall</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🎠</span>
+      <div class="highlight-text" style="font-size: 13px;">Kids Play Area</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🚜</span>
+      <div class="highlight-text" style="font-size: 13px;">Tractor with Tanker</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🧱</span>
+      <div class="highlight-text" style="font-size: 13px;">8 Feet Compound Wall</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">🌳</span>
+      <div class="highlight-text" style="font-size: 13px;">Avenue Plantation</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">💡</span>
+      <div class="highlight-text" style="font-size: 13px;">LED Street Lights</div>
+    </div>
+    <div class="highlight-item no-break" style="padding: 13px 11px; border-radius: 10px;">
+      <span class="highlight-icon" style="font-size: 30px; margin-bottom: 7px;">📹</span>
+      <div class="highlight-text" style="font-size: 13px;">CCTV Network</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 16px; padding: 16px 18px; background: rgba(255,255,255,0.15); border-radius: 12px; border: 1px solid rgba(255,255,255,0.4);">
+    <h3 style="font-size: 19px; color: var(--accent); margin-bottom: 11px; text-align: center;">Infrastructure Details</h3>
+    <div style="font-size: 12.5px; line-height: 1.55; columns: 2; column-gap: 20px;">
+      <p style="margin-bottom: 7px;">
+        <strong>M20 Concrete Roads:</strong> 7 inches thick with 1:1.5:3 ratio. All internal roads are 24 feet wide within 40-foot streets.
+      </p>
+      <p style="margin-bottom: 7px;">
+        <strong>Underground Utilities:</strong> UPVC drainage with SN4 standard. Underground electricity for safety.
+      </p>
+      <p style="margin-bottom: 7px;">
+        <strong>Water Supply:</strong> 1.2 lakh liters overhead tank. 6 Kg/cm² rated pipes for direct supply to third floor.
+      </p>
+      <p style="margin-bottom: 7px;">
+        <strong>Compound Wall:</strong> 8-foot wall with power fencing. Interlocking bricks (6-inch). 50-year lifetime.
+      </p>
+      <p style="margin-bottom: 7px;">
+        <strong>Parks:</strong> 2.2 acres total. Central park (1 acre) with games, outdoor gym, and washrooms. Sports park with all facilities.
+      </p>
+      <p style="margin-bottom: 7px;">
+        <strong>Avenue Plantation:</strong> Medicinal trees (Mango, Guava, Jackfruit, Neem, Bilwa, Arjuna, Anjeera) along footpaths.
+      </p>
+    </div>
+  </div>
+
+  <div class="page-footer">V N Pride - Premium Integrated Township | Page 7</div>
+</div>
+
+<!-- Page 9: Contact -->
+<div class="page" style="background: linear-gradient(135deg, #0f3d27 0%, #1a5f3f 100%); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 70px 60px; text-align: center; box-sizing: border-box;">
+  <div style="max-width: 750px; width: 100%;">
+    <div style="margin-bottom: 55px;">
+      <div style="font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; margin-bottom: 18px; color: #d4af37;">
+        V N Pride
+      </div>
+      <div style="font-size: 26px; font-weight: 300; margin-bottom: 12px;">
+        Premium Integrated Township
+      </div>
+      <div style="font-size: 19px; color: #f4d77d;">
+        Rajampet's First DTCP-Approved Gated Community
+      </div>
+    </div>
+
+    <div style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); border-radius: 22px; padding: 45px; margin-bottom: 55px;">
+      <div style="font-size: 20px; line-height: 1.9; margin-bottom: 35px;">
+        <div style="margin-bottom: 18px;">
+          <strong style="color: #d4af37;">📍 Location:</strong><br>
+          Highway No 716, Rajampet - Tirupathi Road
+        </div>
+        <div style="margin-bottom: 18px;">
+          <strong style="color: #d4af37;">📞 Contact:</strong><br>
+          +91 98765 43210
+        </div>
+        <div style="margin-bottom: 18px;">
+          <strong style="color: #d4af37;">📧 Email:</strong><br>
+          info@vnpride.com
+        </div>
+        <div>
+          <strong style="color: #d4af37;">🌐 Website:</strong><br>
+          www.vnpride.com
+        </div>
+      </div>
+    </div>
+
+    <div style="padding-top: 35px; border-top: 1px solid rgba(255,255,255,0.3);">
+      <p style="font-size: 16px; opacity: 0.9; margin-bottom: 12px;">
+        © 2024 V N Pride. All rights reserved.
+      </p>
+      <p style="font-size: 15px; opacity: 0.7;">
+        DTCP Approved Township | Your Dream Home Awaits
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
