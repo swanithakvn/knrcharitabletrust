@@ -120,6 +120,21 @@
     transform: translate(-50%, -50%);
     pointer-events: none;
   }
+  .cover-video-bg .cover-photo-animated {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    animation: kenBurns 16s ease-in-out infinite;
+    transform-origin: center center;
+  }
+  @keyframes kenBurns {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
   /* Dark overlay on video for readability */
   .cover-video-overlay {
     position: absolute;
@@ -2277,20 +2292,21 @@ function showVideoThumbnail() {
   var bgContainer = document.getElementById('coverVideoBg');
   var canvas = document.getElementById('coverCanvas');
 
-  // Listen for cover video from Firebase (base64 data or URL)
-  db.ref('settings/cover_video_data').on('value', function(snap) {
+  // Listen for cover photo from Firebase (base64 with CSS animation)
+  db.ref('settings/cover_photo_data').on('value', function(snap) {
     var data = snap.val();
     if (data && data.trim()) {
-      // base64 video data stored in Firebase
       if (canvas) canvas.style.display = 'none';
-      var src = data.indexOf('data:') === 0 ? data : 'data:video/mp4;base64,' + data;
-      bgContainer.innerHTML = '<video autoplay muted loop playsinline style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;"><source src="' + src + '" type="video/mp4"></video>';
+      var src = data.indexOf('data:') === 0 ? data : 'data:image/jpeg;base64,' + data;
+      bgContainer.innerHTML = '<img class="cover-photo-animated" src="' + src + '" alt="V N Pride">';
     } else {
-      // Check for URL-based video as fallback
-      db.ref('settings/cover_video').once('value', function(urlSnap) {
-        var url = urlSnap.val();
-        if (url && url.trim()) {
-          loadCoverVideoUrl(url.trim());
+      // Check for video data as fallback
+      db.ref('settings/cover_video_data').once('value', function(vidSnap) {
+        var vidData = vidSnap.val();
+        if (vidData && vidData.trim()) {
+          if (canvas) canvas.style.display = 'none';
+          var src = vidData.indexOf('data:') === 0 ? vidData : 'data:video/mp4;base64,' + vidData;
+          bgContainer.innerHTML = '<video autoplay muted loop playsinline style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;"><source src="' + src + '" type="video/mp4"></video>';
         } else {
           bgContainer.innerHTML = '';
           startParticles();
