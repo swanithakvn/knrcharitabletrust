@@ -38,19 +38,22 @@
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
       margin: 0;
-      padding: 0;
+      padding: 0 !important;
+      padding-top: 0 !important;
+      background: white !important;
     }
 
     .page {
       page-break-after: always;
       page-break-inside: avoid;
-      margin: 0;
-      height: 297mm;
-      max-height: 297mm;
-      overflow: hidden;
+      margin: 0 !important;
+      width: 210mm !important;
+      height: 297mm !important;
+      max-height: 297mm !important;
+      overflow: hidden !important;
     }
 
-    .page:last-child {
+    .page:last-of-type {
       page-break-after: auto;
     }
 
@@ -91,6 +94,7 @@
     align-items: center;
     text-align: center;
     padding: 50px 40px;
+    overflow: hidden;
   }
 
   .cover-page::before {
@@ -98,6 +102,103 @@
     position: absolute;
     inset: 0;
     background: radial-gradient(circle at 20% 30%, rgba(212,175,55,0.2), transparent 40%);
+  }
+
+  /* ===== Cover Page Video Background ===== */
+  .cover-video-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .cover-video-bg iframe,
+  .cover-video-bg video {
+    position: absolute;
+    top: 50%; left: 50%;
+    min-width: 100%; min-height: 100%;
+    width: auto; height: auto;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  /* Dark overlay on video for readability */
+  .cover-video-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(15,61,39,0.45), rgba(26,95,63,0.40));
+    z-index: 1;
+  }
+
+  /* Fallback particle canvas (shown if video fails) */
+  .cover-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Animated shine on title */
+  .cover-title {
+    position: relative;
+    background: linear-gradient(90deg, white 0%, white 35%, #ffd700 50%, white 65%, white 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleShine 3s ease-in-out infinite;
+  }
+  @keyframes titleShine {
+    0% { background-position: 300% center; }
+    100% { background-position: -300% center; }
+  }
+
+  /* Cover badge glow */
+  .cover-badge {
+    animation: badgeGlow 2s ease-in-out infinite alternate;
+  }
+  @keyframes badgeGlow {
+    0% { box-shadow: 0 0 10px rgba(212,175,55,0.2); }
+    100% { box-shadow: 0 0 25px rgba(212,175,55,0.5), 0 0 50px rgba(212,175,55,0.2); }
+  }
+
+  /* Stats pop-in */
+  .stat-number {
+    animation: statPop 0.6s ease-out both;
+  }
+  .cover-stats .stat:nth-child(1) .stat-number { animation-delay: 0.3s; }
+  .cover-stats .stat:nth-child(2) .stat-number { animation-delay: 0.6s; }
+  .cover-stats .stat:nth-child(3) .stat-number { animation-delay: 0.9s; }
+  @keyframes statPop {
+    0% { opacity: 0; transform: translateY(20px) scale(0.8); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Sparkle stars */
+  .sparkle {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .sparkle::before, .sparkle::after {
+    content: '';
+    position: absolute;
+    background: #d4af37;
+  }
+  .sparkle::before {
+    width: 2px; height: 14px;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .sparkle::after {
+    width: 14px; height: 2px;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .sparkle {
+    animation: sparklePop 2.5s ease-in-out infinite;
+  }
+  @keyframes sparklePop {
+    0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1) rotate(45deg); }
   }
 
   .cover-content {
@@ -333,29 +434,123 @@
     color: rgba(255,255,255,0.7);
   }
 
-  .print-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: var(--primary);
-    color: white;
-    padding: 14px 35px;
+  .page-action-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 24px;
+    flex-wrap: wrap;
+  }
+  .page-action-buttons button {
+    padding: 14px 32px;
     border: none;
     border-radius: 50px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(26,95,63,0.3);
-    z-index: 1000;
-    font-size: 16px;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
+  .btn-save-pdf {
+    background: linear-gradient(135deg, var(--accent), #c4a030);
+    color: var(--dark);
+    box-shadow: 0 4px 18px rgba(212,175,55,0.4);
+  }
+  .btn-save-pdf:hover {
+    background: linear-gradient(135deg, #e0c050, var(--accent));
+    box-shadow: 0 6px 24px rgba(212,175,55,0.5);
+    transform: translateY(-2px);
+  }
+  .btn-inquire {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: white;
+    box-shadow: 0 4px 18px rgba(37,211,102,0.4);
+  }
+  .btn-inquire:hover {
+    background: linear-gradient(135deg, #2be075, #25d366);
+    box-shadow: 0 6px 24px rgba(37,211,102,0.5);
+    transform: translateY(-2px);
+  }
+  .btn-inquire svg { width: 20px; height: 20px; fill: white; }
 
-  .print-button:hover {
-    background: var(--primary-light);
+  /* Inquiry Popup */
+  .inquiry-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
   }
+  .inquiry-popup-overlay.open { display: flex; }
+  .inquiry-popup {
+    background: linear-gradient(135deg, #0f3d27, #1a5f3f);
+    border-radius: 20px;
+    padding: 36px 32px;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .inquiry-popup .popup-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .inquiry-popup .popup-close:hover { opacity: 1; }
+  .inquiry-popup h2 {
+    color: var(--accent);
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .inquiry-popup p {
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .inquiry-popup .inquiry-form input,
+  .inquiry-popup .inquiry-form textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 15px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  .inquiry-popup .inquiry-form input::placeholder,
+  .inquiry-popup .inquiry-form textarea::placeholder { color: rgba(255,255,255,0.4); }
+  .inquiry-popup .inquiry-form input:focus,
+  .inquiry-popup .inquiry-form textarea:focus { outline: none; border-color: var(--accent); }
+  .inquiry-popup .inquiry-form textarea { resize: vertical; min-height: 80px; }
 
   @media print {
-    .print-button {
-      display: none;
+    .page-action-buttons { display: none !important; }
+    .inquiry-popup-overlay { display: none !important; }
+    .cover-video-bg, .cover-video-overlay, .cover-canvas { display: none !important; }
+    .video-page { display: none !important; }
+    .web-sections, .web-sections-bg, .site-nav, .admin-panel-overlay, .lightbox {
+      display: none !important;
     }
   }
 
@@ -398,14 +593,688 @@
     line-height: 1.6;
     font-size: 1rem;
   }
+
+  /* ===== Navigation Bar ===== */
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #0f3d27, #1a5f3f);
+    z-index: 999;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+  }
+  .site-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 18px;
+    border-radius: 25px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .site-nav a:hover, .site-nav a.active {
+    background: var(--accent);
+    color: var(--dark);
+    border-color: var(--accent);
+  }
+  .site-nav .admin-btn {
+    background: rgba(212,175,55,0.2);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: white;
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+  .nav-links { display: contents; }
+  .nav-brand { display: none; }
+  body { padding-top: 55px; background: #0f3d27; }
+  [id] { scroll-margin-top: 60px; }
+
+  /* ===== Web Sections Common ===== */
+  .web-sections-bg {
+    background: white;
+  }
+  .web-sections {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .section-block {
+    padding: 60px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .section-subtitle {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 15px;
+    margin-bottom: 40px;
+  }
+
+  /* ===== Photo Gallery Grid ===== */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .photo-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    background: #f8f9fa;
+    transition: transform 0.3s;
+  }
+  .photo-card:hover { transform: translateY(-4px); }
+  .photo-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  .photo-card .caption {
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .photo-card .caption .date {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+    font-size: 15px;
+  }
+
+  /* ===== Testimonials ===== */
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .testimonial-card {
+    background: linear-gradient(135deg, #f8f9fa, white);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .testimonial-card .quote {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .testimonial-card .quote::before { content: '\201C'; font-size: 28px; color: var(--accent); line-height: 0; vertical-align: -8px; margin-right: 4px; }
+  .testimonial-card .quote::after { content: '\201D'; font-size: 28px; color: var(--accent); line-height: 0; vertical-align: -8px; margin-left: 4px; }
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .testimonial-author img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .testimonial-author .no-photo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .testimonial-author .info { font-size: 13px; }
+  .testimonial-author .info strong { color: var(--primary); }
+  .testimonial-author .info span { display: block; color: var(--text-light); font-size: 12px; }
+  .testimonial-stars { color: var(--accent); margin-bottom: 10px; font-size: 16px; }
+
+  /* ===== Inquiry Panel ===== */
+  .inquiry-section {
+    background: linear-gradient(135deg, #0f3d27, #1a5f3f);
+    padding: 60px 20px;
+    margin: 0 -20px;
+    border-radius: 0;
+  }
+  .inquiry-section .section-title, .inquiry-section .section-subtitle {
+    color: white;
+  }
+  .inquiry-section .section-subtitle { color: rgba(255,255,255,0.8); }
+  .inquiry-form {
+    max-width: 550px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .inquiry-form input, .inquiry-form textarea {
+    padding: 14px 18px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .inquiry-form input::placeholder, .inquiry-form textarea::placeholder {
+    color: rgba(255,255,255,0.5);
+  }
+  .inquiry-form input:focus, .inquiry-form textarea:focus {
+    border-color: var(--accent);
+  }
+  .inquiry-form textarea { resize: vertical; min-height: 100px; }
+  .whatsapp-btn {
+    background: #25D366;
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.3s;
+  }
+  .whatsapp-btn:hover { background: #1ebe57; }
+  .whatsapp-btn svg { width: 22px; height: 22px; fill: white; }
+
+  /* ===== Admin Panel ===== */
+  .admin-panel-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    overflow-y: auto;
+    padding: 40px 20px;
+  }
+  .admin-panel-overlay.open { display: flex; justify-content: center; align-items: flex-start; }
+  .admin-panel {
+    background: white;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 700px;
+    padding: 30px;
+    position: relative;
+  }
+  .admin-panel h2 { font-family: 'Playfair Display', serif; color: var(--primary); font-size: 28px; margin-bottom: 20px; }
+  .admin-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--text-light);
+  }
+  .admin-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .admin-tabs button {
+    padding: 8px 18px;
+    border: 2px solid var(--primary);
+    border-radius: 25px;
+    background: white;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .admin-tabs button.active { background: var(--primary); color: white; }
+  .admin-tab-content { display: none; }
+  .admin-tab-content.active { display: block; }
+  .admin-form { display: flex; flex-direction: column; gap: 14px; }
+  .admin-form label { font-weight: 600; font-size: 13px; color: var(--text); }
+  .admin-form input, .admin-form textarea, .admin-form select {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+  }
+  .admin-form textarea { resize: vertical; min-height: 80px; }
+  .admin-submit {
+    background: var(--primary);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .admin-submit:hover { background: var(--primary-light); }
+  .admin-items { margin-top: 20px; }
+  .admin-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  .admin-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; }
+  .admin-item .info { flex: 1; font-size: 13px; }
+  .admin-item .delete-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .login-form {
+    max-width: 320px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .login-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  .login-form button {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .login-error { color: #e74c3c; font-size: 13px; margin-top: 8px; display: none; }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; }
+
+  /* ===== Video Section ===== */
+  .video-container {
+    position: relative;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding-top: 56.25%;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .video-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(255,0,0,0.85);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: white;
+    transition: all 0.3s;
+    padding-left: 5px;
+  }
+  .video-container:hover .video-play-btn {
+    background: rgba(255,0,0,1);
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  .video-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* ===== Contact Page ===== */
+  .contact-page {
+    background: linear-gradient(135deg, #0f3d27 0%, #1a5f3f 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 70px 60px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  .contact-inner { max-width: 750px; width: 100%; }
+  .contact-brand { margin-bottom: 55px; }
+  .contact-title { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; margin-bottom: 18px; color: #d4af37; }
+  .contact-sub { font-size: 26px; font-weight: 300; margin-bottom: 12px; }
+  .contact-tagline { font-size: 19px; color: #f4d77d; }
+  .contact-card {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 22px;
+    padding: 45px;
+    margin-bottom: 55px;
+  }
+  .contact-details { font-size: 20px; line-height: 1.9; }
+  .contact-item { margin-bottom: 18px; }
+  .contact-item:last-child { margin-bottom: 0; }
+  .contact-footer { padding-top: 35px; border-top: 1px solid rgba(255,255,255,0.3); }
+  .contact-footer p { font-size: 16px; opacity: 0.9; margin-bottom: 12px; }
+  .contact-footer-sub { font-size: 15px !important; opacity: 0.7; }
+
+  /* ===== Carousel ===== */
+  .carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  .carousel-track {
+    display: flex;
+    transition: transform 0.4s ease;
+  }
+  .carousel-track .photo-card {
+    flex: 0 0 33.333%;
+    max-width: 33.333%;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0 8px;
+  }
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary);
+    color: white;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-btn:hover { background: var(--primary-light); }
+  .carousel-btn.prev { left: 4px; }
+  .carousel-btn.next { right: 4px; }
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .carousel-dot.active { background: var(--primary); }
+
+  /* ===== Mobile Responsive ===== */
+  @media screen and (max-width: 768px) {
+    body { padding-top: 48px; }
+
+    .hamburger { display: block; }
+    .site-nav {
+      padding: 12px 16px;
+    }
+    .nav-links {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, #0f3d27, #1a5f3f);
+      padding: 12px 16px;
+      gap: 6px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .nav-links.open { display: flex; }
+    .site-nav a {
+      padding: 10px 16px;
+      font-size: 14px;
+      text-align: left;
+      border-radius: 8px;
+    }
+    .site-nav .nav-brand {
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      border: none;
+      padding: 0;
+    }
+    .site-nav .nav-brand:hover { background: none; }
+    .nav-brand { display: block !important; margin: 0 auto; }
+
+    /* Brochure pages: remove fixed A4 sizing on mobile */
+    .page {
+      width: 100%;
+      height: auto;
+      max-height: none;
+      overflow: visible;
+    }
+    .content-page {
+      padding: 24px 16px 50px 16px;
+      height: auto;
+      max-height: none;
+      overflow: visible;
+    }
+    .highlight-section {
+      padding: 24px 16px 50px 16px;
+    }
+    .cover-page {
+      padding: 40px 20px;
+    }
+    .cover-title { font-size: 48px; }
+    .cover-subtitle { font-size: 20px; }
+    .cover-location { font-size: 14px; margin-bottom: 30px; }
+    .cover-stats { gap: 24px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+    .stat-number { font-size: 36px; }
+    .stat-label { font-size: 13px; }
+    .cover-badge { font-size: 10px; padding: 8px 18px; letter-spacing: 1px; margin-bottom: 20px; }
+
+    .page-header { margin-bottom: 16px; padding-bottom: 10px; }
+    .page-badge { padding: 6px 16px; font-size: 10px; margin-bottom: 10px; }
+    .page-title { font-size: 28px !important; margin-bottom: 8px; }
+    .page-subtitle { font-size: 14px !important; }
+    .intro-text { font-size: 14px !important; line-height: 1.6 !important; }
+
+    .detail-box { padding: 12px 14px; margin-bottom: 10px; }
+    .detail-box h3 { font-size: 15px; gap: 8px; }
+    .detail-box p { font-size: 13px; }
+    .icon { font-size: 18px; }
+
+    .special-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .special-card { padding: 16px 14px !important; }
+
+    .highlights-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+    .highlight-item { padding: 10px 8px !important; }
+    .highlight-icon { font-size: 24px !important; }
+    .highlight-text { font-size: 11px !important; }
+
+    .page-footer {
+      position: relative;
+      bottom: auto;
+      left: auto;
+      right: auto;
+      font-size: 12px;
+      padding-top: 12px;
+      margin-top: 20px;
+    }
+
+    /* Contact page mobile */
+    .contact-page {
+      padding: 30px 16px !important;
+      height: auto !important;
+      max-height: none !important;
+    }
+    .contact-inner { max-width: 100%; }
+    .contact-brand { margin-bottom: 28px; }
+    .contact-title { font-size: 36px; margin-bottom: 10px; }
+    .contact-sub { font-size: 17px; margin-bottom: 8px; }
+    .contact-tagline { font-size: 14px; }
+    .contact-card { padding: 20px; margin-bottom: 28px; border-radius: 16px; }
+    .contact-details { font-size: 15px; line-height: 1.7; }
+    .contact-item { margin-bottom: 14px; }
+    .contact-footer { padding-top: 20px; }
+    .contact-footer p { font-size: 13px; }
+    .contact-footer-sub { font-size: 12px !important; }
+
+    /* Web sections */
+    .section-block { padding: 36px 0; }
+    .section-title { font-size: 26px; }
+    .section-subtitle { font-size: 13px; margin-bottom: 24px; }
+    .web-sections { padding: 0 12px; }
+
+    .testimonial-grid { grid-template-columns: 1fr; }
+    .testimonial-card { padding: 18px; }
+
+    .inquiry-section { padding: 36px 16px; margin: 0 -12px; }
+    .inquiry-form input, .inquiry-form textarea { font-size: 14px; padding: 12px 14px; }
+    .whatsapp-btn { font-size: 15px; padding: 14px; }
+
+    /* Carousel: 1 photo at a time on mobile */
+    .carousel-track .photo-card {
+      flex: 0 0 100%;
+      max-width: 100%;
+      padding: 0 4px;
+    }
+    .carousel-btn { width: 36px; height: 36px; font-size: 16px; }
+
+    /* Admin panel mobile */
+    .admin-panel { padding: 20px 16px; }
+    .admin-panel h2 { font-size: 22px; }
+    .admin-tabs { gap: 4px; }
+    .admin-tabs button { padding: 6px 12px; font-size: 11px; }
+
+    .page-action-buttons { gap: 10px; }
+    .page-action-buttons button { padding: 12px 22px; font-size: 13px; }
+    .inquiry-popup { padding: 28px 20px; }
+  }
+
+  @media screen and (max-width: 480px) {
+    .cover-title { font-size: 38px; }
+    .cover-stats { gap: 16px; }
+    .stat-number { font-size: 30px; }
+    .highlights-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .site-nav a { padding: 5px 9px; font-size: 10px; }
+  }
+
+  /* Tablet: 2 photos in carousel */
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
+    .carousel-track .photo-card {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+  }
 </style>
 </head>
 <body>
 
-<button class="print-button" onclick="window.print()">📄 Save as PDF</button>
+<!-- Navigation Bar -->
+<nav class="site-nav">
+  <span class="nav-brand">V N Pride</span>
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="navLinks">
+    <a href="#brochure" onclick="closeMenu()">Brochure</a>
+    <a href="#status-photos" onclick="closeMenu()">Status Photos</a>
+    <a href="#testimonials" onclick="closeMenu()">Testimonials</a>
+    <a href="#events-gallery" onclick="closeMenu()">Events Gallery</a>
+    <a href="#inquiry" onclick="closeMenu()">Inquiry</a>
+    <a href="#" class="admin-btn" onclick="openAdmin(); closeMenu(); return false;">Admin</a>
+  </div>
+</nav>
 
 <!-- Page 1: Cover -->
-<div class="page cover-page">
+<div class="page cover-page" id="brochure">
+  <!-- Video background (loaded dynamically) -->
+  <div class="cover-video-bg" id="coverVideoBg"></div>
+  <div class="cover-video-overlay"></div>
+
+  <!-- Fallback particle canvas -->
+  <canvas class="cover-canvas" id="coverCanvas"></canvas>
+
+  <!-- Sparkle stars -->
+  <div class="sparkle" style="top:12%;left:18%;animation-delay:0s;"></div>
+  <div class="sparkle" style="top:22%;right:12%;animation-delay:0.6s;"></div>
+  <div class="sparkle" style="top:55%;left:8%;animation-delay:1.2s;"></div>
+  <div class="sparkle" style="top:72%;right:20%;animation-delay:1.8s;"></div>
+  <div class="sparkle" style="top:38%;left:82%;animation-delay:0.3s;"></div>
+  <div class="sparkle" style="top:88%;left:40%;animation-delay:1.5s;"></div>
+
   <div class="cover-content">
     <div class="cover-badge">DTCP APPROVED GATED COMMUNITY</div>
     <h1 class="cover-title">V N Pride</h1>
@@ -432,10 +1301,14 @@
 <!-- Page 2: What & Where -->
 <div class="page content-page">
   <div class="page-header" style="margin-bottom: 20px;">
-    <div class="page-badge" style="padding: 7px 20px; font-size: 11px; margin-bottom: 12px;">ABOUT V N PRIDE</div>
-    <h2 class="page-title" style="font-size: 40px; margin-bottom: 10px;">What is V N Pride?</h2>
-    <p class="page-subtitle" style="font-size: 16px;">ఏమిటి ఈ వి యన్ ప్రైడ్?</p>
+    <h2 class="page-title" style="font-size: 40px; margin-bottom: 10px;">About V N Pride</h2>
+    <p class="page-subtitle" style="font-size: 16px;">వి యన్ ప్రైడ్ గురించి</p>
   </div>
+
+  <h3 style="font-size: 30px; color: var(--primary); margin: 20px 0 14px 0; text-align: center;">
+    What is V N Pride?<br>
+    <span style="font-size: 17px; color: var(--text-light); font-weight: 400;">ఏమిటి ఈ వి యన్ ప్రైడ్?</span>
+  </h3>
 
   <p class="intro-text" style="font-size: 16px; line-height: 1.65; margin-bottom: 20px;">
     V N Pride is a massive DTCP-approved Integrated Gated Community Township spanning 25 acres of land.
@@ -480,6 +1353,25 @@
   </div>
 
   <div class="page-footer">V N Pride - Premium Integrated Township | Page 1</div>
+</div>
+
+<!-- Video Section -->
+<div class="page content-page video-page">
+  <div class="page-header">
+    <div class="page-badge">WATCH</div>
+    <h2 class="page-title">Experience V N Pride</h2>
+    <p class="page-subtitle">Take a virtual tour of our premium township</p>
+  </div>
+  <div class="video-container" id="videoContainer">
+    <div id="ytPlayer"></div>
+  </div>
+  <div class="page-action-buttons">
+    <button class="btn-save-pdf" onclick="window.print()">📄 Save as PDF</button>
+    <button class="btn-inquire" onclick="openInquiryPopup()">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Inquire Now
+    </button>
+  </div>
 </div>
 
 <!-- Page 3: Special Features - Foodz Corner -->
@@ -554,6 +1446,13 @@
     </div>
   </div>
 
+  <div class="page-action-buttons">
+    <button class="btn-save-pdf" onclick="window.print()">📄 Save as PDF</button>
+    <button class="btn-inquire" onclick="openInquiryPopup()">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Inquire Now
+    </button>
+  </div>
   <div class="page-footer">V N Pride - Premium Integrated Township | Page 3</div>
 </div>
 
@@ -654,6 +1553,13 @@
     </div>
   </div>
 
+  <div class="page-action-buttons">
+    <button class="btn-save-pdf" onclick="window.print()">📄 Save as PDF</button>
+    <button class="btn-inquire" onclick="openInquiryPopup()">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Inquire Now
+    </button>
+  </div>
   <div class="page-footer">V N Pride - Premium Integrated Township | Page 6</div>
 </div>
 
@@ -756,51 +1662,719 @@
 </div>
 
 <!-- Page 9: Contact -->
-<div class="page" style="background: linear-gradient(135deg, #0f3d27 0%, #1a5f3f 100%); color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 70px 60px; text-align: center; box-sizing: border-box;">
-  <div style="max-width: 750px; width: 100%;">
-    <div style="margin-bottom: 55px;">
-      <div style="font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 700; margin-bottom: 18px; color: #d4af37;">
-        V N Pride
-      </div>
-      <div style="font-size: 26px; font-weight: 300; margin-bottom: 12px;">
-        Premium Integrated Township
-      </div>
-      <div style="font-size: 19px; color: #f4d77d;">
-        Rajampet's First DTCP-Approved Gated Community
-      </div>
+<div class="page contact-page">
+  <div class="contact-inner">
+    <div class="contact-brand">
+      <div class="contact-title">V N Pride</div>
+      <div class="contact-sub">Premium Integrated Township</div>
+      <div class="contact-tagline">Rajampet's First DTCP-Approved Gated Community</div>
     </div>
 
-    <div style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4); border-radius: 22px; padding: 45px; margin-bottom: 55px;">
-      <div style="font-size: 20px; line-height: 1.9; margin-bottom: 35px;">
-        <div style="margin-bottom: 18px;">
+    <div class="contact-card">
+      <div class="contact-details">
+        <div class="contact-item">
           <strong style="color: #d4af37;">📍 Location:</strong><br>
           Highway No 716, Rajampet - Tirupathi Road
         </div>
-        <div style="margin-bottom: 18px;">
+        <div class="contact-item">
           <strong style="color: #d4af37;">📞 Contact:</strong><br>
-          +91 98765 43210
+          +91 63094 48111
         </div>
-        <div style="margin-bottom: 18px;">
+        <div class="contact-item">
           <strong style="color: #d4af37;">📧 Email:</strong><br>
-          info@vnpride.com
+          venobleinfra@gmail.com
         </div>
-        <div>
+        <div class="contact-item">
           <strong style="color: #d4af37;">🌐 Website:</strong><br>
-          www.vnpride.com
+          www.venobleinfra.com
         </div>
       </div>
     </div>
 
-    <div style="padding-top: 35px; border-top: 1px solid rgba(255,255,255,0.3);">
-      <p style="font-size: 16px; opacity: 0.9; margin-bottom: 12px;">
-        © 2024 V N Pride. All rights reserved.
-      </p>
-      <p style="font-size: 15px; opacity: 0.7;">
-        DTCP Approved Township | Your Dream Home Awaits
-      </p>
+    <div class="contact-footer">
+      <p>© 2024 V N Pride. All rights reserved.</p>
+      <p class="contact-footer-sub">DTCP Approved Township | Your Dream Home Awaits</p>
     </div>
   </div>
 </div>
+
+<!-- ===== WEB SECTIONS ===== -->
+<div class="web-sections-bg">
+<div class="web-sections">
+
+  <!-- Status Photos Section -->
+  <div class="section-block" id="status-photos">
+    <h2 class="section-title">Construction Status</h2>
+    <p class="section-subtitle">Latest progress updates from the site</p>
+    <div class="carousel-wrapper" id="statusCarousel">
+      <button class="carousel-btn prev" onclick="carouselMove('status', -1)">&#8249;</button>
+      <div class="carousel-track" id="statusPhotosGrid">
+        <div class="empty-state" style="flex:0 0 100%;">No status photos uploaded yet. Check back soon!</div>
+      </div>
+      <button class="carousel-btn next" onclick="carouselMove('status', 1)">&#8250;</button>
+      <div class="carousel-dots" id="statusDots"></div>
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <div class="section-block" id="testimonials">
+    <h2 class="section-title">What Our Customers Say</h2>
+    <p class="section-subtitle">Hear from our happy plot owners</p>
+    <div class="testimonial-grid" id="testimonialsGrid">
+      <div class="empty-state">No testimonials yet. Be the first to share your experience!</div>
+    </div>
+  </div>
+
+  <!-- Events Gallery Section -->
+  <div class="section-block" id="events-gallery">
+    <h2 class="section-title">Events Gallery</h2>
+    <p class="section-subtitle">Memorable moments from V N Pride events</p>
+    <div class="carousel-wrapper" id="eventsCarousel">
+      <button class="carousel-btn prev" onclick="carouselMove('events', -1)">&#8249;</button>
+      <div class="carousel-track" id="eventsGalleryGrid">
+        <div class="empty-state" style="flex:0 0 100%;">No event photos uploaded yet. Stay tuned!</div>
+      </div>
+      <button class="carousel-btn next" onclick="carouselMove('events', 1)">&#8250;</button>
+      <div class="carousel-dots" id="eventsDots"></div>
+    </div>
+  </div>
+
+  <!-- Inquiry Panel -->
+  <div class="section-block" style="border-bottom: none; padding-bottom: 0;">
+    <div class="inquiry-section" id="inquiry">
+      <h2 class="section-title">Interested? Get in Touch!</h2>
+      <p class="section-subtitle">Fill in your details and we'll connect with you on WhatsApp</p>
+      <form class="inquiry-form" id="inquiryForm" onsubmit="sendWhatsApp(event)">
+        <input type="text" id="inqName" placeholder="Your Full Name" required>
+        <input type="tel" id="inqPhone" placeholder="Phone Number" required>
+        <input type="text" id="inqLocation" placeholder="Your City / Location" required>
+        <textarea id="inqMessage" placeholder="Your Message (e.g., interested in plot details, site visit...)"></textarea>
+        <button type="submit" class="whatsapp-btn">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Send via WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- Inquiry Popup -->
+<div class="inquiry-popup-overlay" id="inquiryPopup" onclick="if(event.target===this)closeInquiryPopup()">
+  <div class="inquiry-popup">
+    <button class="popup-close" onclick="closeInquiryPopup()">&times;</button>
+    <h2>Interested? Get in Touch!</h2>
+    <p>Fill in your details and we'll connect with you on WhatsApp</p>
+    <form class="inquiry-form" onsubmit="sendWhatsAppPopup(event)">
+      <input type="text" id="popupInqName" placeholder="Your Full Name" required>
+      <input type="tel" id="popupInqPhone" placeholder="Phone Number" required>
+      <input type="text" id="popupInqLocation" placeholder="Your City / Location" required>
+      <textarea id="popupInqMessage" placeholder="Your Message (e.g., interested in plot details, site visit...)"></textarea>
+      <button type="submit" class="whatsapp-btn">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Send via WhatsApp
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+  <img id="lightboxImg" src="" alt="Preview">
+</div>
+
+<!-- Admin Panel Overlay -->
+<div class="admin-panel-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <button class="admin-close" onclick="closeAdmin()">&times;</button>
+
+    <!-- Login View -->
+    <div id="adminLogin">
+      <h2>Admin Login</h2>
+      <div class="login-form">
+        <input type="password" id="adminPassword" placeholder="Enter admin password" onkeydown="if(event.key==='Enter') adminLoginCheck()">
+        <button onclick="adminLoginCheck()">Login</button>
+        <p class="login-error" id="loginError">Incorrect password. Try again.</p>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" style="display:none;">
+      <h2>Admin Dashboard</h2>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div class="admin-tabs">
+          <button class="active" onclick="switchAdminTab('status', this)">Status Photos</button>
+          <button onclick="switchAdminTab('testimonials', this)">Testimonials</button>
+          <button onclick="switchAdminTab('events', this)">Events Gallery</button>
+          <button onclick="switchAdminTab('settings', this)">Settings</button>
+        </div>
+        <button onclick="adminLogout()" style="background:none;border:1px solid #e74c3c;color:#e74c3c;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px;">Logout</button>
+      </div>
+
+      <!-- Status Photos Tab -->
+      <div class="admin-tab-content active" id="tab-status">
+        <div class="admin-form">
+          <label>Upload Photo</label>
+          <input type="file" id="statusFile" accept="image/*">
+          <label>Caption</label>
+          <input type="text" id="statusCaption" placeholder="e.g., Road work completed - Block A">
+          <button class="admin-submit" onclick="addStatusPhoto()">Add Status Photo</button>
+        </div>
+        <div class="admin-items" id="adminStatusList"></div>
+      </div>
+
+      <!-- Testimonials Tab -->
+      <div class="admin-tab-content" id="tab-testimonials">
+        <div class="admin-form">
+          <label>Customer Name</label>
+          <input type="text" id="testName" placeholder="Full name">
+          <label>Plot Number / Location</label>
+          <input type="text" id="testPlot" placeholder="e.g., Plot 45, Block B">
+          <label>Testimonial</label>
+          <textarea id="testQuote" placeholder="Customer's feedback..."></textarea>
+          <label>Rating</label>
+          <select id="testRating">
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+          </select>
+          <label>Photo (optional)</label>
+          <input type="file" id="testPhoto" accept="image/*">
+          <button class="admin-submit" onclick="addTestimonial()">Add Testimonial</button>
+        </div>
+        <div class="admin-items" id="adminTestimonialList"></div>
+      </div>
+
+      <!-- Events Tab -->
+      <div class="admin-tab-content" id="tab-events">
+        <div class="admin-form">
+          <label>Upload Photo</label>
+          <input type="file" id="eventFile" accept="image/*">
+          <label>Event Name / Caption</label>
+          <input type="text" id="eventCaption" placeholder="e.g., Foundation stone ceremony">
+          <button class="admin-submit" onclick="addEventPhoto()">Add Event Photo</button>
+        </div>
+        <div class="admin-items" id="adminEventList"></div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div class="admin-tab-content" id="tab-settings">
+        <div class="admin-form">
+          <label>Cover Background Video (YouTube URL or direct MP4 URL)</label>
+          <input type="text" id="coverVideoUrl" placeholder="https://youtu.be/... or https://example.com/video.mp4">
+          <p style="font-size:11px;color:var(--text-light);margin-top:-8px;">Leave empty for animated particle effect. YouTube videos play muted on loop.</p>
+          <label>WhatsApp Number (with country code, e.g., 916309448111)</label>
+          <input type="text" id="waNumber" placeholder="916309448111">
+          <label>Change Admin Password</label>
+          <input type="password" id="newPassword" placeholder="New password">
+          <button class="admin-submit" onclick="saveSettings()">Save Settings</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- YouTube IFrame API -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+// ===== Firebase Init =====
+const firebaseConfig = {
+  apiKey: "AIzaSyBF5RDXE5fBNX0uOdOCSDpH89DCOH10kD4",
+  authDomain: "vn-pride.firebaseapp.com",
+  databaseURL: "https://vn-pride-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "vn-pride",
+  storageBucket: "vn-pride.firebasestorage.app",
+  messagingSenderId: "788464981336",
+  appId: "1:788464981336:web:28d0bbe8f01a51b72a412d"
+};
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
+
+// ===== Hamburger Menu =====
+function toggleMenu() {
+  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('hamburgerBtn').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('hamburgerBtn').classList.remove('open');
+}
+
+// ===== Local data cache (updated by Firebase listeners) =====
+var localData = { status_photos: [], testimonials: [], event_photos: [] };
+var settings = { wa_number: '916309448111', admin_password: 'vnpride2024', cover_video: '' };
+
+// ===== Firebase Data Listeners (real-time sync) =====
+function initFirebaseListeners() {
+  db.ref('status_photos').on('value', function(snap) {
+    localData.status_photos = snap.val() ? Object.entries(snap.val()).map(function(e) { return Object.assign({ _key: e[0] }, e[1]); }).reverse() : [];
+    renderStatusPhotos();
+    if (sessionStorage.getItem('vnpride_admin') === '1') refreshAdminLists();
+  });
+  db.ref('testimonials').on('value', function(snap) {
+    localData.testimonials = snap.val() ? Object.entries(snap.val()).map(function(e) { return Object.assign({ _key: e[0] }, e[1]); }).reverse() : [];
+    renderTestimonials();
+    if (sessionStorage.getItem('vnpride_admin') === '1') refreshAdminLists();
+  });
+  db.ref('event_photos').on('value', function(snap) {
+    localData.event_photos = snap.val() ? Object.entries(snap.val()).map(function(e) { return Object.assign({ _key: e[0] }, e[1]); }).reverse() : [];
+    renderEventsGallery();
+    if (sessionStorage.getItem('vnpride_admin') === '1') refreshAdminLists();
+  });
+  db.ref('settings').on('value', function(snap) {
+    if (snap.val()) {
+      settings = Object.assign(settings, snap.val());
+    }
+  });
+}
+
+// ===== File to Base64 (with compression) =====
+function fileToBase64(file, maxWidth) {
+  maxWidth = maxWidth || 800;
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        var canvas = document.createElement('canvas');
+        var w = img.width, h = img.height;
+        if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// ===== Carousel State =====
+var carousels = { status: { index: 0 }, events: { index: 0 } };
+
+function getItemsPerView() {
+  if (window.innerWidth <= 768) return 1;
+  if (window.innerWidth <= 1024) return 2;
+  return 3;
+}
+
+function carouselMove(name, dir) {
+  var key = name === 'status' ? 'status_photos' : 'event_photos';
+  var total = localData[key].length;
+  var perView = getItemsPerView();
+  var maxIndex = Math.max(0, total - perView);
+  carousels[name].index = Math.max(0, Math.min(carousels[name].index + dir, maxIndex));
+  updateCarouselPosition(name);
+}
+
+function carouselGoTo(name, index) {
+  carousels[name].index = index;
+  updateCarouselPosition(name);
+}
+
+function updateCarouselPosition(name) {
+  var trackId = name === 'status' ? 'statusPhotosGrid' : 'eventsGalleryGrid';
+  var dotsId = name === 'status' ? 'statusDots' : 'eventsDots';
+  var track = document.getElementById(trackId);
+  var perView = getItemsPerView();
+  var offset = carousels[name].index * (100 / perView);
+  track.style.transform = 'translateX(-' + offset + '%)';
+  var key = name === 'status' ? 'status_photos' : 'event_photos';
+  var total = localData[key].length;
+  var maxIndex = Math.max(0, total - perView);
+  var dotsEl = document.getElementById(dotsId);
+  if (total <= perView) { dotsEl.innerHTML = ''; return; }
+  var dotsHtml = '';
+  for (var i = 0; i <= maxIndex; i++) {
+    dotsHtml += '<button class="carousel-dot' + (i === carousels[name].index ? ' active' : '') + '" onclick="carouselGoTo(\'' + name + '\',' + i + ')"></button>';
+  }
+  dotsEl.innerHTML = dotsHtml;
+}
+
+// ===== Render Functions =====
+function renderStatusPhotos() {
+  var items = localData.status_photos;
+  var grid = document.getElementById('statusPhotosGrid');
+  carousels.status.index = 0;
+  if (!items.length) {
+    grid.innerHTML = '<div class="empty-state" style="flex:0 0 100%;">No status photos uploaded yet. Check back soon!</div>';
+    grid.style.transform = 'translateX(0)';
+    document.getElementById('statusDots').innerHTML = '';
+    return;
+  }
+  grid.innerHTML = items.map(function(item) {
+    return '<div class="photo-card"><img src="' + item.image + '" alt="' + item.caption + '" onclick="openLightbox(this.src)" style="cursor:pointer;"><div class="caption">' + item.caption + '<div class="date">' + item.date + '</div></div></div>';
+  }).join('');
+  updateCarouselPosition('status');
+}
+
+function renderTestimonials() {
+  var items = localData.testimonials;
+  var grid = document.getElementById('testimonialsGrid');
+  if (!items.length) { grid.innerHTML = '<div class="empty-state">No testimonials yet. Be the first to share your experience!</div>'; return; }
+  grid.innerHTML = items.map(function(item) {
+    var stars = Array(parseInt(item.rating)).fill('\u2605').join('');
+    var initial = item.name.charAt(0).toUpperCase();
+    var avatar = item.photo
+      ? '<img src="' + item.photo + '" alt="' + item.name + '">'
+      : '<div class="no-photo">' + initial + '</div>';
+    return '<div class="testimonial-card"><div class="testimonial-stars">' + stars + '</div><div class="quote">' + item.quote + '</div><div class="testimonial-author">' + avatar + '<div class="info"><strong>' + item.name + '</strong><span>' + item.plot + '</span></div></div></div>';
+  }).join('');
+}
+
+function renderEventsGallery() {
+  var items = localData.event_photos;
+  var grid = document.getElementById('eventsGalleryGrid');
+  carousels.events.index = 0;
+  if (!items.length) {
+    grid.innerHTML = '<div class="empty-state" style="flex:0 0 100%;">No event photos uploaded yet. Stay tuned!</div>';
+    grid.style.transform = 'translateX(0)';
+    document.getElementById('eventsDots').innerHTML = '';
+    return;
+  }
+  grid.innerHTML = items.map(function(item) {
+    return '<div class="photo-card"><img src="' + item.image + '" alt="' + item.caption + '" onclick="openLightbox(this.src)" style="cursor:pointer;"><div class="caption">' + item.caption + '<div class="date">' + item.date + '</div></div></div>';
+  }).join('');
+  updateCarouselPosition('events');
+}
+
+// ===== Lightbox =====
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+// ===== WhatsApp Inquiry =====
+function sendWhatsApp(e) {
+  e.preventDefault();
+  var name = document.getElementById('inqName').value.trim();
+  var phone = document.getElementById('inqPhone').value.trim();
+  var location = document.getElementById('inqLocation').value.trim();
+  var message = document.getElementById('inqMessage').value.trim();
+  var waNum = settings.wa_number || '916309448111';
+  var text = 'Hello V N Pride Team!%0A%0AName: ' + encodeURIComponent(name) + '%0APhone: ' + encodeURIComponent(phone) + '%0ALocation: ' + encodeURIComponent(location) + '%0AMessage: ' + encodeURIComponent(message || 'I am interested in V N Pride plots.');
+  window.open('https://wa.me/' + waNum + '?text=' + text, '_blank');
+}
+
+function openInquiryPopup() { document.getElementById('inquiryPopup').classList.add('open'); }
+function closeInquiryPopup() { document.getElementById('inquiryPopup').classList.remove('open'); }
+function sendWhatsAppPopup(e) {
+  e.preventDefault();
+  var name = document.getElementById('popupInqName').value.trim();
+  var phone = document.getElementById('popupInqPhone').value.trim();
+  var location = document.getElementById('popupInqLocation').value.trim();
+  var message = document.getElementById('popupInqMessage').value.trim();
+  var waNum = settings.wa_number || '916309448111';
+  var text = 'Hello V N Pride Team!%0A%0AName: ' + encodeURIComponent(name) + '%0APhone: ' + encodeURIComponent(phone) + '%0ALocation: ' + encodeURIComponent(location) + '%0AMessage: ' + encodeURIComponent(message || 'I am interested in V N Pride plots.');
+  window.open('https://wa.me/' + waNum + '?text=' + text, '_blank');
+  closeInquiryPopup();
+}
+
+// ===== Admin Panel =====
+function openAdmin() {
+  document.getElementById('adminOverlay').classList.add('open');
+  var loggedIn = sessionStorage.getItem('vnpride_admin') === '1';
+  document.getElementById('adminLogin').style.display = loggedIn ? 'none' : 'block';
+  document.getElementById('adminDashboard').style.display = loggedIn ? 'block' : 'none';
+  if (loggedIn) { refreshAdminLists(); loadSettings(); }
+}
+function closeAdmin() { document.getElementById('adminOverlay').classList.remove('open'); }
+
+function adminLoginCheck() {
+  var pwd = document.getElementById('adminPassword').value;
+  var stored = settings.admin_password || 'vnpride2024';
+  if (pwd === stored) {
+    sessionStorage.setItem('vnpride_admin', '1');
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminDashboard').style.display = 'block';
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('loginError').style.display = 'none';
+    refreshAdminLists();
+    loadSettings();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+function adminLogout() {
+  sessionStorage.removeItem('vnpride_admin');
+  document.getElementById('adminLogin').style.display = 'block';
+  document.getElementById('adminDashboard').style.display = 'none';
+}
+
+function switchAdminTab(tab, btn) {
+  document.querySelectorAll('.admin-tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.admin-tabs button').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== Admin Add Functions =====
+function showUploading(btn) { btn.disabled = true; btn.textContent = 'Uploading...'; }
+function hideUploading(btn, text) { btn.disabled = false; btn.textContent = text; }
+
+async function addStatusPhoto() {
+  var file = document.getElementById('statusFile').files[0];
+  var caption = document.getElementById('statusCaption').value.trim();
+  if (!file || !caption) { alert('Please select a photo and enter a caption.'); return; }
+  var btn = event.target; showUploading(btn);
+  try {
+    var image = await fileToBase64(file);
+    var date = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    await db.ref('status_photos').push({ image: image, caption: caption, date: date, timestamp: Date.now() });
+    document.getElementById('statusFile').value = '';
+    document.getElementById('statusCaption').value = '';
+  } catch(err) { alert('Upload failed: ' + err.message); }
+  hideUploading(btn, 'Add Status Photo');
+}
+
+async function addTestimonial() {
+  var name = document.getElementById('testName').value.trim();
+  var plot = document.getElementById('testPlot').value.trim();
+  var quote = document.getElementById('testQuote').value.trim();
+  var rating = document.getElementById('testRating').value;
+  if (!name || !quote) { alert('Please enter customer name and testimonial.'); return; }
+  var btn = event.target; showUploading(btn);
+  try {
+    var photo = '';
+    var file = document.getElementById('testPhoto').files[0];
+    if (file) photo = await fileToBase64(file, 200);
+    await db.ref('testimonials').push({ name: name, plot: plot, quote: quote, rating: rating, photo: photo, timestamp: Date.now() });
+    document.getElementById('testName').value = '';
+    document.getElementById('testPlot').value = '';
+    document.getElementById('testQuote').value = '';
+    document.getElementById('testPhoto').value = '';
+  } catch(err) { alert('Upload failed: ' + err.message); }
+  hideUploading(btn, 'Add Testimonial');
+}
+
+async function addEventPhoto() {
+  var file = document.getElementById('eventFile').files[0];
+  var caption = document.getElementById('eventCaption').value.trim();
+  if (!file || !caption) { alert('Please select a photo and enter a caption.'); return; }
+  var btn = event.target; showUploading(btn);
+  try {
+    var image = await fileToBase64(file);
+    var date = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    await db.ref('event_photos').push({ image: image, caption: caption, date: date, timestamp: Date.now() });
+    document.getElementById('eventFile').value = '';
+    document.getElementById('eventCaption').value = '';
+  } catch(err) { alert('Upload failed: ' + err.message); }
+  hideUploading(btn, 'Add Event Photo');
+}
+
+// ===== Admin Delete =====
+function deleteItem(type, key) {
+  if (!confirm('Are you sure you want to delete this?')) return;
+  db.ref(type + '/' + key).remove();
+}
+
+// ===== Admin Lists =====
+function refreshAdminLists() {
+  var statusItems = localData.status_photos;
+  document.getElementById('adminStatusList').innerHTML = statusItems.map(function(item) {
+    return '<div class="admin-item"><img src="' + item.image + '" alt=""><div class="info"><strong>' + item.caption + '</strong><br>' + item.date + '</div><button class="delete-btn" onclick="deleteItem(\'status_photos\',\'' + item._key + '\')">Delete</button></div>';
+  }).join('') || '<p style="color:var(--text-light);font-size:13px;margin-top:12px;">No status photos yet.</p>';
+
+  var testItems = localData.testimonials;
+  document.getElementById('adminTestimonialList').innerHTML = testItems.map(function(item) {
+    var avatar = item.photo ? '<img src="' + item.photo + '" alt="">' : '<div style="width:60px;height:60px;background:var(--primary);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:22px;font-weight:700;">' + item.name.charAt(0) + '</div>';
+    return '<div class="admin-item">' + avatar + '<div class="info"><strong>' + item.name + '</strong> - ' + item.plot + '<br><em>"' + item.quote.substring(0, 60) + '..."</em></div><button class="delete-btn" onclick="deleteItem(\'testimonials\',\'' + item._key + '\')">Delete</button></div>';
+  }).join('') || '<p style="color:var(--text-light);font-size:13px;margin-top:12px;">No testimonials yet.</p>';
+
+  var eventItems = localData.event_photos;
+  document.getElementById('adminEventList').innerHTML = eventItems.map(function(item) {
+    return '<div class="admin-item"><img src="' + item.image + '" alt=""><div class="info"><strong>' + item.caption + '</strong><br>' + item.date + '</div><button class="delete-btn" onclick="deleteItem(\'event_photos\',\'' + item._key + '\')">Delete</button></div>';
+  }).join('') || '<p style="color:var(--text-light);font-size:13px;margin-top:12px;">No event photos yet.</p>';
+}
+
+// ===== Settings =====
+function loadSettings() {
+  document.getElementById('waNumber').value = settings.wa_number || '916309448111';
+  document.getElementById('coverVideoUrl').value = settings.cover_video || '';
+}
+function saveSettings() {
+  var waNum = document.getElementById('waNumber').value.trim();
+  var newPwd = document.getElementById('newPassword').value;
+  var coverVideo = document.getElementById('coverVideoUrl').value.trim();
+  var updates = {};
+  if (waNum) updates.wa_number = waNum;
+  if (newPwd) updates.admin_password = newPwd;
+  updates.cover_video = coverVideo;
+  db.ref('settings').update(updates).then(function() {
+    if (newPwd) document.getElementById('newPassword').value = '';
+    alert('Settings saved!');
+  }).catch(function(err) { alert('Error: ' + err.message); });
+}
+
+// ===== Touch Swipe for Carousels =====
+function initSwipe(carouselId, name) {
+  var el = document.getElementById(carouselId);
+  var startX = 0, moveX = 0;
+  el.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; }, { passive: true });
+  el.addEventListener('touchmove', function(e) { moveX = e.touches[0].clientX; }, { passive: true });
+  el.addEventListener('touchend', function() {
+    var diff = startX - moveX;
+    if (Math.abs(diff) > 50) { carouselMove(name, diff > 0 ? 1 : -1); }
+    startX = 0; moveX = 0;
+  });
+}
+initSwipe('statusCarousel', 'status');
+initSwipe('eventsCarousel', 'events');
+
+// ===== Resize handler =====
+window.addEventListener('resize', function() {
+  updateCarouselPosition('status');
+  updateCarouselPosition('events');
+});
+
+// ===== YouTube Video Section =====
+var ytVideoId = 'J99huwwzObU';
+
+function onYouTubeIframeAPIReady() {
+  var container = document.getElementById('videoContainer');
+  container.innerHTML = '<div id="ytPlayer"></div>';
+  var ytPlayer = new YT.Player('ytPlayer', {
+    videoId: ytVideoId,
+    width: '100%',
+    height: '100%',
+    playerVars: { rel: 0 },
+    events: {
+      onReady: function() {
+        var iframe = document.querySelector('#videoContainer iframe');
+        if (iframe) {
+          iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border-radius:16px;';
+        }
+      },
+      onError: function() {
+        showVideoThumbnail();
+      }
+    }
+  });
+  // Timeout fallback — if player doesn't load in 4s, show thumbnail
+  setTimeout(function() {
+    var iframe = document.querySelector('#videoContainer iframe');
+    if (!iframe || iframe.offsetHeight < 10) showVideoThumbnail();
+  }, 4000);
+}
+
+function showVideoThumbnail() {
+  var c = document.getElementById('videoContainer');
+  c.innerHTML = '<a href="https://www.youtube.com/watch?v=' + ytVideoId + '" target="_blank" style="display:block;text-decoration:none;position:absolute;top:0;left:0;width:100%;height:100%;">' +
+    '<img src="https://img.youtube.com/vi/' + ytVideoId + '/maxresdefault.jpg" alt="V N Pride Tour" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">' +
+    '<div class="video-play-btn">&#9654;</div></a>';
+}
+
+// ===== Cover Background Video =====
+(function() {
+  var bgContainer = document.getElementById('coverVideoBg');
+  var canvas = document.getElementById('coverCanvas');
+
+  // Listen for cover video from Firebase (base64 data or URL)
+  db.ref('settings/cover_video_data').on('value', function(snap) {
+    var data = snap.val();
+    if (data && data.trim()) {
+      // base64 video data stored in Firebase
+      if (canvas) canvas.style.display = 'none';
+      var src = data.indexOf('data:') === 0 ? data : 'data:video/mp4;base64,' + data;
+      bgContainer.innerHTML = '<video autoplay muted loop playsinline style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;"><source src="' + src + '" type="video/mp4"></video>';
+    } else {
+      // Check for URL-based video as fallback
+      db.ref('settings/cover_video').once('value', function(urlSnap) {
+        var url = urlSnap.val();
+        if (url && url.trim()) {
+          loadCoverVideoUrl(url.trim());
+        } else {
+          bgContainer.innerHTML = '';
+          startParticles();
+        }
+      });
+    }
+  });
+
+  function loadCoverVideoUrl(url) {
+    if (canvas) canvas.style.display = 'none';
+    var ytId = extractYouTubeId(url);
+    if (ytId) {
+      bgContainer.innerHTML = '<iframe src="https://www.youtube.com/embed/' + ytId + '?autoplay=1&mute=1&loop=1&playlist=' + ytId + '&controls=0&showinfo=0&modestbranding=1&playsinline=1&rel=0&disablekb=1" allow="autoplay" style="position:absolute;top:50%;left:50%;min-width:120%;min-height:120%;width:auto;height:auto;transform:translate(-50%,-50%);pointer-events:none;border:none;"></iframe>';
+    } else {
+      bgContainer.innerHTML = '<video autoplay muted loop playsinline style="position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;width:auto;height:auto;transform:translate(-50%,-50%);object-fit:cover;pointer-events:none;"><source src="' + url + '" type="video/mp4"></video>';
+    }
+  }
+
+  function extractYouTubeId(url) {
+    var match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|shorts\/))([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+
+  function startParticles() {
+    if (!canvas) return;
+    canvas.style.display = 'block';
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var count = 50;
+
+    function resize() {
+      var p = canvas.parentElement;
+      canvas.width = p.offsetWidth;
+      canvas.height = p.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        r: Math.random() * 2 + 1,
+        gold: Math.random() > 0.6
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.gold ? 'rgba(212,175,55,0.7)' : 'rgba(255,255,255,0.4)';
+        ctx.fill();
+        for (var j = i + 1; j < particles.length; j++) {
+          var p2 = particles[j];
+          var d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
+          if (d < 120) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = 'rgba(212,175,55,' + (0.15 * (1 - d / 120)) + ')';
+            ctx.lineWidth = 0.7;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+})();
+
+// ===== Init =====
+initFirebaseListeners();
+</script>
 
 </body>
 </html>
